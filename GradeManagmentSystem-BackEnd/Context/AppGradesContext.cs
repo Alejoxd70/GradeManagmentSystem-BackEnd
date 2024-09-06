@@ -12,7 +12,16 @@ namespace GradeManagmentSystem_BackEnd.Context
         }
 
         public DbSet<User> Users { get; set; }
-        
+        //Añadi los siguientes DbSet
+        public DbSet<UserType> UserTypes { get; set; }
+        public DbSet<PermissionUserType> PermissionUserTypes { get; set; }
+
+        public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Attendant> Attendants { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<GroupYear> GroupYears { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,7 +31,13 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<UserType>().HasKey(u => u.Id);
             modelBuilder.Entity<PermissionUserType>().HasKey(u => u.Id);
             modelBuilder.Entity<Permission>().HasKey(u => u.Id);
-            modelBuilder.Entity<Student>().HasKey(u => u.Id); 
+            modelBuilder.Entity<Student>().HasKey(u => u.Id);
+            //Añadi Builder
+            modelBuilder.Entity<Attendant>().HasKey(u => u.Id);
+            modelBuilder.Entity<Teacher>().HasKey(u => u.Id);
+            modelBuilder.Entity<GroupYear>().HasKey(u => u.Id);
+
+
 
 
         }
