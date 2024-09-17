@@ -22,6 +22,8 @@ namespace GradeManagmentSystem_BackEnd.Context
         public DbSet<Attendant> Attendants { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<GroupYear> GroupYears { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Group> Groups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +38,10 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<Attendant>().HasKey(u => u.Id);
             modelBuilder.Entity<Teacher>().HasKey(u => u.Id);
             modelBuilder.Entity<GroupYear>().HasKey(u => u.Id);
+
+            //añadi estos builders
+            modelBuilder.Entity<Subject>().HasKey(u => u.Id);
+            modelBuilder.Entity<Group>().HasKey(u => u.Id);
 
 
 
