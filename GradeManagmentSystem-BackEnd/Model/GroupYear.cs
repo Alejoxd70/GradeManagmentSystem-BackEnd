@@ -10,6 +10,6 @@ namespace GradeManagmentSystem_BackEnd.Model
 
         public virtual required Student Student { get; set; }
 
-        //public virtual required Group Group { get; set; }
+        public virtual required Group Group { get; set; }
     }
 }
