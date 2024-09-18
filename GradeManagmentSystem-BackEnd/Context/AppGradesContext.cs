@@ -44,6 +44,11 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<Group>().HasKey(u => u.Id);
 
 
+            modelBuilder.Entity<Assigment>().HasKey(u => u.Id);
+            modelBuilder.Entity<Grade>().HasKey(u => u.Id);
+            modelBuilder.Entity<SubjectTeacher>().HasKey(u => u.Id);
+
+
 
 
         }
