@@ -8,5 +8,7 @@
         public required string Description { get; set; }
         public required DateOnly Date { get; set; }
         public virtual required SubjectTeacher? SubjectTeacher { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

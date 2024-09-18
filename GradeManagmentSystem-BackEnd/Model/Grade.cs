@@ -6,5 +6,7 @@
         public required string Value { get; set; }
         public virtual required Assigment? Assigment { get; set; }
         public virtual required Student? Student { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }
