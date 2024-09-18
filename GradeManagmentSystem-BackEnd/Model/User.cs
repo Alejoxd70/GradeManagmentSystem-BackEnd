@@ -16,3 +16,4 @@ namespace GradeManagmentSystem_BackEnd.Model
         public virtual required UserType UserType { get; set; }
     }
 }
+
