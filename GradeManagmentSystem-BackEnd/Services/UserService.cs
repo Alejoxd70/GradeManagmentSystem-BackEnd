@@ -21,26 +21,32 @@ namespace GradeManagmentSystem_BackEnd.Services
             _userRepository = userRepository;
         }
 
+        // Get All Users
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _userRepository.GetAllUsersAsync();
         }
 
+        // Get user by Id
         public async Task<User> GetUserByIdAsync(int id)
         {
             return await _userRepository.GetUserByIdAsync(id);
         }
 
+        // Create a user
         public async Task CreateUserAsync(User user)
         {
             await _userRepository.CreateUserAsync(user);
         }
 
+        // Update a user
         public async Task UpdateUserAsync(User user)
         {
             await _userRepository.UpdateUserAsync(user);
         }
 
+
+        // Delete a user
         public async Task SoftDeleteUserAsync(int id)
         {
             await _userRepository.SoftDeleteUserAsync(id);
