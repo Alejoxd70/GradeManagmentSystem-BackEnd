@@ -4,5 +4,7 @@
     {
         public int Id { get; set; }
         public required string GroupName { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

@@ -9,5 +9,7 @@ namespace GradeManagmentSystem_BackEnd.Model
         public virtual required User User { get; set; }
 
         public required string Specialization { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }
