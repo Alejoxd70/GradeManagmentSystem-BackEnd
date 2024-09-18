@@ -14,6 +14,8 @@ namespace GradeManagmentSystem_BackEnd.Model
         public required string Identification { get; set; }
 
         public virtual required UserType UserType { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }
 
