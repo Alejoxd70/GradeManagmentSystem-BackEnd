@@ -24,6 +24,9 @@ namespace GradeManagmentSystem_BackEnd.Context
         public DbSet<GroupYear> GroupYears { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Assigment> Assigments { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<SubjectTeacher> SubjectTeachers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
