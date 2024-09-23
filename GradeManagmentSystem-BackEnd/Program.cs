@@ -10,9 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddDbContext<AppGradesContext>(options => options.UseSqlServer(connection));
 
-// Enroll Repositories and services
+// -------- Add Repositories and services ---------//
+// User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
 //Assigment
 builder.Services.AddScoped<IAssigmentRepository, AssigmentRepository>();
 builder.Services.AddScoped<IAssigmentService, AssigmentService>();
@@ -22,6 +24,21 @@ builder.Services.AddScoped<IGroupYearService, GroupYearService>();
 //Subject Teacher
 builder.Services.AddScoped<ISubjectTeacherRepository, SubjectTeacherRepository>();
 builder.Services.AddScoped<ISubjectTeacherService, SubjectTeacherService>();
+
+
+// Student 
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
+// Attendant
+builder.Services.AddScoped<IAttendantRepository, AttendantRepository>();
+builder.Services.AddScoped<IAttendantService, AttendantService>();
+
+// Teacher
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
