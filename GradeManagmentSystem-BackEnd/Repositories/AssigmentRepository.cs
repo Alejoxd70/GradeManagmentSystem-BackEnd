@@ -48,7 +48,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task SoftDeleteAssigmentAsync(int id)
         {
             var assigment = await _context.Assigments.FindAsync(id);
-            if (assigment == null)
+            if (assigment != null)
             {
                 assigment.IsDeleted = true;
                 await _context.SaveChangesAsync();
