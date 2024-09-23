@@ -9,9 +9,22 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddDbContext<AppGradesContext>(options => options.UseSqlServer(connection));
 
-// Enroll Repositories and services
+// -------- Add Repositories and services ---------//
+// User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Student 
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
+// Attendant
+builder.Services.AddScoped<IAttendantRepository, AttendantRepository>();
+builder.Services.AddScoped<IAttendantService, AttendantService>();
+
+// Teacher
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
 
 
 builder.Services.AddControllers();
