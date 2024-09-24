@@ -14,7 +14,15 @@ builder.Services.AddDbContext<AppGradesContext>(options => options.UseSqlServer(
 // User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-
+//Grade
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IGradeService, GradeService>();
+//Group
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupService, GroupService>();
+//Subject
+builder.Services.AddScoped<ISubjectRepository,  SubjectRepository>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
 //Assigment
 builder.Services.AddScoped<IAssigmentRepository, AssigmentRepository>();
 builder.Services.AddScoped<IAssigmentService, AssigmentService>();
@@ -37,6 +45,7 @@ builder.Services.AddScoped<IAttendantService, AttendantService>();
 // Teacher
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
+
 
 
 
