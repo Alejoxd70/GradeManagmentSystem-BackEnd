@@ -11,11 +11,11 @@ namespace GradeManagmentSystem_BackEnd.Services
         Task UpdatePermissionUserTypeAsync(PermissionUserType permissionUserType);
         Task SoftDeletePermissionUserTypeAsync(int id);
     }
-    public class PermissionUserTypeUserTypeService : IPermissionUserTypeService
+    public class PermissionUserTypeService : IPermissionUserTypeService
     {
         private readonly IPermissionUserTypeRepository _permissionUserTypeRepository;
 
-        public PermissionUserTypeUserTypeService(IPermissionUserTypeRepository permissionUserTypeRepository)
+        public PermissionUserTypeService(IPermissionUserTypeRepository permissionUserTypeRepository)
         {
             _permissionUserTypeRepository = permissionUserTypeRepository;
         }
