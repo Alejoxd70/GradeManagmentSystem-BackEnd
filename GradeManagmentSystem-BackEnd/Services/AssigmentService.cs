@@ -46,7 +46,15 @@ namespace GradeManagmentSystem_BackEnd.Services
         //Update Assigment
         public async Task UpdateAssigmentAsync(Assigment assigment)
         {
-            await _assigmentRepository.UpdateAssigmentAsync(assigment);
+            try
+            {
+                await _assigmentRepository.UpdateAssigmentAsync(assigment);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
     }
 }

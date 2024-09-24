@@ -45,7 +45,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateStudent([FromBody] Student student)
+        public async Task<ActionResult> CreateStudent([FromForm] Student student)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -60,7 +60,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateStudent(int id, [FromBody] Student student)
+        public async Task<IActionResult> UpdateStudent(int id, [FromForm] Student student)
         {
             if (id != student.Id) return BadRequest();
 

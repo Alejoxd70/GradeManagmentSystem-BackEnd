@@ -42,7 +42,15 @@ namespace GradeManagmentSystem_BackEnd.Services
         // Update a user
         public async Task UpdateUserAsync(User user)
         {
-            await _userRepository.UpdateUserAsync(user);
+            try
+            {
+                await _userRepository.UpdateUserAsync(user);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
 

@@ -44,7 +44,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateGroupYear([FromBody] GroupYear groupYear)
+        public async Task<ActionResult> CreateGroupYear([FromForm] GroupYear groupYear)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -59,7 +59,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateGroupYear(int id, [FromBody] GroupYear groupYear)
+        public async Task<IActionResult> UpdateGroupYear(int id, [FromForm] GroupYear groupYear)
         {
             if (id != groupYear.Id) return BadRequest();
 
