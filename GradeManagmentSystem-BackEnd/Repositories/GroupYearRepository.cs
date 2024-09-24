@@ -41,7 +41,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         //Get Group Year by ID
         public async Task<GroupYear> GetGroupYearByIdAsync(int id)
         {
-            return await _context.GroupYears
+            return await _context.GroupYears.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
@@ -59,8 +59,17 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         //Update Group Year
         public async Task UpdateGroupYearAsync(GroupYear groupYear)
         {
-            _context.GroupYears.Update(groupYear);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.GroupYears.Update(groupYear);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+
+            }
         }
     }
 }

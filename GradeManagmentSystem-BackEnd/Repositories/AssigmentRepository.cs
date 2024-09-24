@@ -41,10 +41,11 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         //Get Assigment by Id
         public async Task<Assigment> GetAssigmentByIdAsync(int id)
         {
-            return await _context.Assigments
+            return await _context.Assigments.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
+        //Delete Assigment
         public async Task SoftDeleteAssigmentAsync(int id)
         {
             var assigment = await _context.Assigments.FindAsync(id);
@@ -55,10 +56,20 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             }
         }
 
+        //Update Assigment
         public async Task UpdateAssigmentAsync(Assigment assigment)
         {
-            _context.Assigments.Update(assigment);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Assigments.Update(assigment);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+
+            }
         }
     }
 }

@@ -31,7 +31,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         //Get All Subject Teacher
         public async Task<IEnumerable<SubjectTeacher>> GeAlltSubjectTeachersAsync()
         {
-            return await _context.SubjectTeachers
+            return await _context.SubjectTeachers.AsNoTracking()
                 .Where(s => !s.IsDeleted)
                 .ToListAsync();
         }
@@ -57,8 +57,17 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         //Update Subject Teacher
         public async Task UpdateSubjectTeacherAsync(SubjectTeacher subjectTeacher)
         {
-            _context.SubjectTeachers.Update(subjectTeacher);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.SubjectTeachers.Update(subjectTeacher);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+
+            }
         }
     }
 }
