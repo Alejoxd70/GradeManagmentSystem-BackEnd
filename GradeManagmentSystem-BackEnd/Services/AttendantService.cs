@@ -42,7 +42,14 @@ namespace GradeManagmentSystem_BackEnd.Services
         // Update a attendant
         public async Task UpdateAttendantAsync(Attendant attendant)
         {
-            await _attendantRepository.UpdateAttendantAsync(attendant);
+            try
+            {
+                await _attendantRepository.UpdateAttendantAsync(attendant);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

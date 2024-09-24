@@ -47,7 +47,15 @@ namespace GradeManagmentSystem_BackEnd.Services
         //Update GroupYear
         public async Task UpdateGroupYearAsync(GroupYear groupYear)
         {
-            await _groupYearRepository.UpdateGroupYearAsync(groupYear);
+            try
+            {
+                await _groupYearRepository.UpdateGroupYearAsync(groupYear);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
     }
 }
