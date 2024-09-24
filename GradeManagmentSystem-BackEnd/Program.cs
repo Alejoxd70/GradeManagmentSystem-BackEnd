@@ -2,6 +2,7 @@ using GradeManagmentSystem_BackEnd.Context;
 using GradeManagmentSystem_BackEnd.Repositories;
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.EntityFrameworkCore;
+using static GradeManagmentSystem_BackEnd.Services.ISubjectTeacherService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,18 +10,43 @@ var builder = WebApplication.CreateBuilder(args);
 var connection = builder.Configuration.GetConnectionString("Connection");
 builder.Services.AddDbContext<AppGradesContext>(options => options.UseSqlServer(connection));
 
-// Enroll Repositories and services
+// -------- Add Repositories and services ---------//
+// User
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-
+//Grade
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<IGradeService, GradeService>();
-
+//Group
 builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 builder.Services.AddScoped<IGroupService, GroupService>();
-
+//Subject
 builder.Services.AddScoped<ISubjectRepository,  SubjectRepository>();
 builder.Services.AddScoped<ISubjectService, SubjectService>();
+//Assigment
+builder.Services.AddScoped<IAssigmentRepository, AssigmentRepository>();
+builder.Services.AddScoped<IAssigmentService, AssigmentService>();
+//Group Year
+builder.Services.AddScoped<IGroupYearRepository, GroupYearRepository>();
+builder.Services.AddScoped<IGroupYearService, GroupYearService>();
+//Subject Teacher
+builder.Services.AddScoped<ISubjectTeacherRepository, SubjectTeacherRepository>();
+builder.Services.AddScoped<ISubjectTeacherService, SubjectTeacherService>();
+
+
+// Student 
+builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+
+// Attendant
+builder.Services.AddScoped<IAttendantRepository, AttendantRepository>();
+builder.Services.AddScoped<IAttendantService, AttendantService>();
+
+// Teacher
+builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
+builder.Services.AddScoped<ITeacherService, TeacherService>();
+
+
 
 
 builder.Services.AddControllers();
