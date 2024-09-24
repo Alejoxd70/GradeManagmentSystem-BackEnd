@@ -42,7 +42,14 @@ namespace GradeManagmentSystem_BackEnd.Services
         // Update a group
         public async Task UpdateGroupAsync(Group group)
         {
-            await _groupRepository.UpdateGroupAsync(group);
+            try
+            {
+                await _groupRepository.UpdateGroupAsync(group);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

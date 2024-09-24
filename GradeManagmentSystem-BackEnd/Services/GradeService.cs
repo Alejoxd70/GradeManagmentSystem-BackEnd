@@ -42,7 +42,14 @@ namespace GradeManagmentSystem_BackEnd.Services
         // Update a grade
         public async Task UpdateGradeAsync(Grade grade)
         {
-            await _gradeRepository.UpdateGradeAsync(grade);
+            try
+            {
+                await _gradeRepository.UpdateGradeAsync(grade);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 
