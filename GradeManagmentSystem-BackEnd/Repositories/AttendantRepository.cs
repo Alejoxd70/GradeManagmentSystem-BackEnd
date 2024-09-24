@@ -32,7 +32,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         // Get attendant by Id
         public async Task<Attendant> GetAttendantByIdAsync(int id)
         {
-            return await _context.Attendants
+            return await _context.Attendants.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
@@ -47,8 +47,17 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         // Update Attendant
         public async Task UpdateAttendantAsync(Attendant attendant)
         {
-            _context.Attendants.Update(attendant);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Attendants.Update(attendant);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+
+            }
         }
 
 
