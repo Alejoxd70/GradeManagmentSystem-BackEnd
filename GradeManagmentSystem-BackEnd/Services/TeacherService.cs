@@ -41,7 +41,15 @@ namespace GradeManagmentSystem_BackEnd.Services
         // Update a teacher
         public async Task UpdateTeacherAsync(Teacher teacher)
         {
-            await _teacherRepository.UpdateTeacherAsync(teacher);
+            try
+            {
+                await _teacherRepository.UpdateTeacherAsync(teacher);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
         }
 
 

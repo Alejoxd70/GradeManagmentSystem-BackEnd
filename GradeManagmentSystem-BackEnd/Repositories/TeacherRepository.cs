@@ -32,7 +32,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         // Get teacher by Id
         public async Task<Teacher> GetTeacherByIdAsync(int id)
         {
-            return await _context.Teachers
+            return await _context.Teachers.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
@@ -47,10 +47,18 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         // Update Teacher
         public async Task UpdateTeacherAsync(Teacher teacher)
         {
-            _context.Teachers.Update(teacher);
-            await _context.SaveChangesAsync();
-        }
+            try
+            {
+                _context.Teachers.Update(teacher);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
 
+                throw;
+
+            }
+        }
 
         // Delete teacher
         public async Task SoftDeleteTeacherAsync(int id)
