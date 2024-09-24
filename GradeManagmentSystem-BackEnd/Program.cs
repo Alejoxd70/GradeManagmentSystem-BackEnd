@@ -13,6 +13,15 @@ builder.Services.AddDbContext<AppGradesContext>(options => options.UseSqlServer(
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<IGradeService, GradeService>();
+
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
+builder.Services.AddScoped<IGroupService, GroupService>();
+
+builder.Services.AddScoped<ISubjectRepository,  SubjectRepository>();
+builder.Services.AddScoped<ISubjectService, SubjectService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
