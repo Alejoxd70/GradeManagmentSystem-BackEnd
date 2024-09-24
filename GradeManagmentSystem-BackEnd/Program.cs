@@ -38,6 +38,19 @@ builder.Services.AddScoped<IAttendantService, AttendantService>();
 builder.Services.AddScoped<ITeacherRepository, TeacherRepository>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 
+//Permission
+builder.Services.AddScoped<IPermissionRepository, PermissionRepository>();
+builder.Services.AddScoped<IPermissionService, PermissionService>();
+
+//PermissionUserType
+builder.Services.AddScoped<IPermissionUserTypeRepository, PermissionUserTypeRepository>();
+builder.Services.AddScoped<IPermissionUserTypeService, PermissionUserTypeService>();
+
+//UserType
+builder.Services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+builder.Services.AddScoped<IUserTypeService, UserTypeService>();
+
+
 
 
 builder.Services.AddControllers();
