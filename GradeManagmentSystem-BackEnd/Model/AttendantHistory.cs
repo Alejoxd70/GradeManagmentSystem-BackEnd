@@ -1,13 +1,12 @@
 ﻿namespace GradeManagmentSystem_BackEnd.Model
 {
-    public class AssigmentHistory
+    public class AttendantHistory
     {
         public int Id { get; set; }
-        public required string IdAssigment { get; set; }
+        public required int IdAttendant { get; set; }
         public required string Name { get; set; }
-        public required string Description { get; set; }
-        public required string Date { get; set; }
-        public required string SubjectTeacher { get; set; }
+        public required string LastName { get; set; }
+        public required string Relationship { get; set; }
         public required DateTime Modified { get; set; }
         public required string ModifiedBy { get; set; }
     }
