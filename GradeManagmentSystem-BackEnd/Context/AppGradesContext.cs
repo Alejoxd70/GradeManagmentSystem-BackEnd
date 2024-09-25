@@ -28,6 +28,8 @@ namespace GradeManagmentSystem_BackEnd.Context
         public DbSet<Grade> Grades { get; set; }
         public DbSet<SubjectTeacher> SubjectTeachers { get; set; }
 
+       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

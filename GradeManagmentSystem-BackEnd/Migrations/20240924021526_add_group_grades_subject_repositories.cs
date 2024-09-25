@@ -10,11 +10,11 @@ namespace GradeManagmentSystem_BackEnd.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Assigment_SubjectTeacher_SubjectTeacherId",
-                table: "Assigment");
+            //migrationBuilder.DropForeignKey(
+                //name: "FK_Assigment_SubjectTeacher_SubjectTeacherId",
+                //table: "Assigment");
 
-            migrationBuilder.DropForeignKey(
+            /*migrationBuilder.DropForeignKey(
                 name: "FK_Grade_Assigment_AssigmentId",
                 table: "Grade");
 
@@ -143,7 +143,7 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                 table: "SubjectTeachers",
                 column: "TeacherId",
                 principalTable: "Teachers",
-                principalColumn: "Id");
+                principalColumn: "Id");*/
         }
 
         /// <inheritdoc />
