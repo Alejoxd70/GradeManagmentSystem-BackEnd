@@ -7,7 +7,7 @@
         public required string UserType { get; set; }
         public required string Permission { get; set; }
         public required DateTime Modified { get; set; }
-        public required string User { get; set; }
+        public required string ModifiedBy { get; set; }
 
     }
 }

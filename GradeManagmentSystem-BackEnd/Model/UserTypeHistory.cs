@@ -6,6 +6,6 @@
         public required string IdUserType { get; set; }
         public required string UserTypeName { get; set; }
         public required DateTime Modified { get; set; }
-        public required string User { get; set; }
+        public required string ModifiedBy { get; set; }
     }
 }
