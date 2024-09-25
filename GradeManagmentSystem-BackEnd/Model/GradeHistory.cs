@@ -10,6 +10,6 @@ namespace GradeManagmentSystem_BackEnd.Model
         public required string Assigment { get; set; }
         public required string Student { get; set; }
         public required DateTime Modified { get; set; }
-        public required string User { get; set; }
+        public required string ModifiedBy { get; set; }
     }
 }
