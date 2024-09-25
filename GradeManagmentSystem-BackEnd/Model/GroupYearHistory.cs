@@ -8,6 +8,6 @@
         public required string Student { get; set; }
         public required string Group { get; set; }
         public required DateTime Modified { get; set; }
-        public  required string User { get; set; }
+        public required string ModifiedBy { get; set; }
     }
 }
