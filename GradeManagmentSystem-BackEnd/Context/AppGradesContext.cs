@@ -77,6 +77,17 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<SubjectTeacherHistory>().HasKey(u => u.Id);
 
 
+
+
+
+
+
+
+
+            modelBuilder.Entity<User>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Group>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Grade>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Subject>().ToTable(tb => tb.UseSqlOutputClause(false));
         }
     }
 }
