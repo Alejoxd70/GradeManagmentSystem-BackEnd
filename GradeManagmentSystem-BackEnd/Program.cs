@@ -33,7 +33,6 @@ builder.Services.AddScoped<IGroupYearService, GroupYearService>();
 builder.Services.AddScoped<ISubjectTeacherRepository, SubjectTeacherRepository>();
 builder.Services.AddScoped<ISubjectTeacherService, SubjectTeacherService>();
 
-
 // Student 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
@@ -58,8 +57,15 @@ builder.Services.AddScoped<IPermissionUserTypeService, PermissionUserTypeService
 builder.Services.AddScoped<IUserTypeRepository, UserTypeRepository>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 
-
-
+// Cors Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+    builder => builder
+        .AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader());
+});
 
 
 builder.Services.AddControllers();
@@ -68,6 +74,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// Use Cors
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
