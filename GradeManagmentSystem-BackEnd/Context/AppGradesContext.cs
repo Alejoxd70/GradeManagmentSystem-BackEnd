@@ -1,6 +1,7 @@
 ﻿using GradeManagmentSystem_BackEnd.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 
 namespace GradeManagmentSystem_BackEnd.Context
 {
@@ -76,7 +77,13 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<GradeHistory>().HasKey(u => u.Id);
             modelBuilder.Entity<SubjectTeacherHistory>().HasKey(u => u.Id);
 
+            //Builder Triggers
+            modelBuilder.Entity<User>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Assigment>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<GroupYear>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<SubjectTeacher>().ToTable(tb => tb.UseSqlOutputClause(false));
 
         }
+       
     }
 }

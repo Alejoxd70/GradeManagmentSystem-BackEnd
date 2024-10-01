@@ -4,6 +4,7 @@ using GradeManagmentSystem_BackEnd.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradeManagmentSystem_BackEnd.Migrations
 {
     [DbContext(typeof(AppGradesContext))]
-    partial class AppGradesContextModelSnapshot : ModelSnapshot
+    [Migration("20240927232718_AddTriggerUser")]
+    partial class AddTriggerUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,8 +55,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("SubjectTeacherId");
 
                     b.ToTable("Assigments");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.AssigmentHistory", b =>
@@ -301,8 +302,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("GroupYears");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.GroupYearHistory", b =>
@@ -588,8 +587,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("SubjectTeachers");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.SubjectTeacherHistory", b =>
@@ -724,8 +721,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("UserTypeId");
 
                     b.ToTable("Users");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.UserHistory", b =>
