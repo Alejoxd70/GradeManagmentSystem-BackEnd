@@ -82,6 +82,10 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<Assigment>().ToTable(tb => tb.UseSqlOutputClause(false));
             modelBuilder.Entity<GroupYear>().ToTable(tb => tb.UseSqlOutputClause(false));
             modelBuilder.Entity<SubjectTeacher>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Student>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Attendant>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<Teacher>().ToTable(tb => tb.UseSqlOutputClause(false));
+
 
         }
        
