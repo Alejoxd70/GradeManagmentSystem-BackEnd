@@ -53,8 +53,8 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                 -- If there are inserted or updated records
                 IF EXISTS (SELECT * FROM inserted)
                 BEGIN
-                    INSERT INTO GroupYearHistories (IdGroupYear, Year, Student, Group, Modified, ModifiedBy)
-                    SELECT i.Id, i.Year, i.StudentId, i.GroupId,
+                    INSERT INTO GroupYearHistories (IdGroupYear, Year, Student, [Group], Modified, ModifiedBy)
+                    SELECT i.Id, i.Year, i.StudentId, i.[GroupId],
                         GETDATE(),
                            CASE 
                                WHEN EXISTS (SELECT * FROM deleted) THEN 'UPDATE' 
@@ -66,8 +66,8 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                 -- If there are deleted records
                 IF EXISTS (SELECT * FROM deleted)
                 BEGIN
-                    INSERT INTO GroupYearHistories (IdGroupYear, Year, Student, Group, Modified, ModifiedBy)
-                    SELECT d.Id, d.Year, d.StudentId, d.GroupId, GETDATE(), 'DELETE'
+                    INSERT INTO GroupYearHistories (IdGroupYear, Year, Student, [Group], Modified, ModifiedBy)
+                    SELECT d.Id, d.Year, d.StudentId, d.[GroupId], GETDATE(), 'DELETE'
                           FROM deleted d;
                 END
             END;
