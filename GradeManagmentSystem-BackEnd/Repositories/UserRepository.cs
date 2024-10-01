@@ -25,7 +25,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         // Get all users
         public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return await _context.Users.AsNoTracking()
+            return await _context.Users
                 .Where(s => !s.IsDeleted) // Avoid deleted items
                 .ToListAsync();
         }
@@ -33,7 +33,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         // Get user by Id
         public async Task<User> GetUserByIdAsync(int id)
         {
-            return await _context.Users
+            return await _context.Users.AsNoTracking()
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
