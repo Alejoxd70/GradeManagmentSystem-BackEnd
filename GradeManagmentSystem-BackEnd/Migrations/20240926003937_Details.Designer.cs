@@ -4,6 +4,7 @@ using GradeManagmentSystem_BackEnd.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GradeManagmentSystem_BackEnd.Migrations
 {
     [DbContext(typeof(AppGradesContext))]
-    partial class AppGradesContextModelSnapshot : ModelSnapshot
+    [Migration("20240926003937_Details")]
+    partial class Details
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,8 +55,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("SubjectTeacherId");
 
                     b.ToTable("Assigments");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.AssigmentHistory", b =>
@@ -122,8 +123,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Attendants");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.AttendantHistory", b =>
@@ -189,8 +188,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("Grades");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.GradeHistory", b =>
@@ -247,8 +244,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Groups");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.GroupHistory", b =>
@@ -307,8 +302,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("GroupYears");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.GroupYearHistory", b =>
@@ -365,8 +358,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.PermissionHistory", b =>
@@ -421,8 +412,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("UserTypeId");
 
                     b.ToTable("PermissionUserTypes");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.PermissionUserTypeHistory", b =>
@@ -465,9 +454,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AttendantId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -480,13 +466,9 @@ namespace GradeManagmentSystem_BackEnd.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AttendantId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Students");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.StudentHistory", b =>
@@ -496,10 +478,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Attendant")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdStudent")
                         .HasColumnType("int");
@@ -546,8 +524,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Subjects");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.SubjectHistory", b =>
@@ -611,8 +587,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("TeacherId");
 
                     b.ToTable("SubjectTeachers");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.SubjectTeacherHistory", b =>
@@ -674,8 +648,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Teachers");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.TeacherHistory", b =>
@@ -749,8 +721,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasIndex("UserTypeId");
 
                     b.ToTable("Users");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.UserHistory", b =>
@@ -819,8 +789,6 @@ namespace GradeManagmentSystem_BackEnd.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserTypes");
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.UserTypeHistory", b =>
@@ -915,19 +883,11 @@ namespace GradeManagmentSystem_BackEnd.Migrations
 
             modelBuilder.Entity("GradeManagmentSystem_BackEnd.Model.Student", b =>
                 {
-                    b.HasOne("GradeManagmentSystem_BackEnd.Model.Attendant", "Attendant")
-                        .WithMany()
-                        .HasForeignKey("AttendantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GradeManagmentSystem_BackEnd.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Attendant");
 
                     b.Navigation("User");
                 });

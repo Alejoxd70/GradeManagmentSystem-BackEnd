@@ -90,6 +90,10 @@ namespace GradeManagmentSystem_BackEnd.Context
             modelBuilder.Entity<Student>().ToTable(tb => tb.UseSqlOutputClause(false));
             modelBuilder.Entity<Attendant>().ToTable(tb => tb.UseSqlOutputClause(false));
             modelBuilder.Entity<Teacher>().ToTable(tb => tb.UseSqlOutputClause(false));
+
+            modelBuilder.Entity<Permission>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<PermissionUserType>().ToTable(tb => tb.UseSqlOutputClause(false));
+            modelBuilder.Entity<UserType>().ToTable(tb => tb.UseSqlOutputClause(false));
         }
        
     }
