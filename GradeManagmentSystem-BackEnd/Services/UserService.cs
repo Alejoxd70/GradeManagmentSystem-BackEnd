@@ -65,7 +65,15 @@ namespace GradeManagmentSystem_BackEnd.Services
         // validate user
         public async Task<bool> ValidateUserAsync(string email, string password)
         {
-            return await _userRepository.ValidateUserAsync(email, password);
+            try
+            {
+                return await _userRepository.ValidateUserAsync(email, password);    
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
     }
 }

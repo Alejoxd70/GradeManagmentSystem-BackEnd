@@ -62,8 +62,16 @@ namespace GradeManagmentSystem_BackEnd.Repositories
                 UserType = userType
             };
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+
+            } 
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
 

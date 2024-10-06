@@ -2,6 +2,7 @@
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static GradeManagmentSystem_BackEnd.Services.ISubjectTeacherService;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 
@@ -46,11 +47,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult> CreateUserType(string name)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _userTypeService.CreateUserTypeAsync(name);
+            try
+            {
+                await _userTypeService.CreateUserTypeAsync(name);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); ;
+            }
+
 
             return StatusCode(StatusCodes.Status201Created, "UserType created successfully.");
 
@@ -62,6 +73,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> UpdateUserType(int id, string name)
         {
@@ -77,7 +90,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e.Message);
             }
         }
 
@@ -85,6 +98,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> SoftDeleteUserType(int id)
         {
@@ -98,7 +113,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e?.Message);
             }
         }
 

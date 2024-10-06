@@ -10,6 +10,8 @@ namespace GradeManagmentSystem_BackEnd.Services
         Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId);
         Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId);
         Task SoftDeletePermissionUserTypeAsync(int id);
+        Task<bool> HasPermissionAsync(int userTypeId, int permissionId);
+
     }
     public class PermissionUserTypeService : IPermissionUserTypeService
     {
@@ -53,11 +55,22 @@ namespace GradeManagmentSystem_BackEnd.Services
             }
         }
 
-
-       
         public async Task SoftDeletePermissionUserTypeAsync(int id)
         {
             await _permissionUserTypeRepository.SoftDeletePermissionUserTypeAsync(id);
+        }
+
+        // Validate if has permission
+        public async Task<bool> HasPermissionAsync(int userTypeId, int permissionId)
+        {
+            try
+            {
+                return await _permissionUserTypeRepository.HasPermissionAsync(userTypeId, permissionId);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

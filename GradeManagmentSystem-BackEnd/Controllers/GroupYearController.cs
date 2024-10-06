@@ -45,11 +45,20 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult> CreateGroupYear(string year, int studentId, int groupId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _groupYearService.CreateGroupYearAsync(year, studentId, groupId);
+            try
+            {
+                await _groupYearService.CreateGroupYearAsync(year, studentId, groupId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); ;
+            }
 
             return StatusCode(StatusCodes.Status201Created, "GroupYear successfully created");
         }
@@ -60,6 +69,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> UpdateGroupYear(int id, string year, int studentId, int groupId)
         {
@@ -74,7 +85,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e.Message);
             }
         }
 
@@ -82,6 +93,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> SoftDeleteGroupYear(int id)
         {
@@ -95,7 +108,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e?.Message);
             }
         }
     }

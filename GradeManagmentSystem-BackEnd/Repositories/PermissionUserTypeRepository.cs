@@ -12,6 +12,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId);
         Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId);
         Task SoftDeletePermissionUserTypeAsync(int id);
+        Task <bool> HasPermissionAsync(int userTypeId, int permissionId);
     }
     public class PermissionUserTypeRepository : IPermissionUserTypeRepository
     {
@@ -22,7 +23,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             _context = context;
         }
 
-        
+        // Get all PermissionUserTypes
         public async Task<IEnumerable<PermissionUserType>> GetAllPermissionUserTypesAsync()
         {
             return await _context.PermissionUserTypes
@@ -32,7 +33,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
                 .ToListAsync();
         }
 
-        
+        // Get a PermissionUserType by a Id
         public async Task<PermissionUserType> GetPermissionUserTypeByIdAsync(int id)
         {
             return await _context.PermissionUserTypes.AsNoTracking()
@@ -41,7 +42,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
-        
+        // Create a PermissionUserType
         public async Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId)
         {
             // Fetch foreing keys if exists
@@ -59,7 +60,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
 
-        
+        // Update a PermissionUserType
         public async Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId)
         {
             // Fetch the UserType
@@ -87,8 +88,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             }
         }
 
-
-        
+        // delete a PermissionUserType
         public async Task SoftDeletePermissionUserTypeAsync(int id)
         {
             var permissionUserType = await _context.PermissionUserTypes.FindAsync(id);
@@ -98,6 +98,16 @@ namespace GradeManagmentSystem_BackEnd.Repositories
                 await _context.SaveChangesAsync();
             }
 
+        }
+
+        // Validate if has permissions
+        public async Task<bool> HasPermissionAsync(int userTypeId, int permissionId)
+        {
+            var permission = await _context.PermissionUserTypes
+            .Where(p => p.UserType.Id == userTypeId && p.Permission.Id == permissionId && !p.IsDeleted)
+            .FirstOrDefaultAsync();
+
+            return permission != null ? true : false;
         }
     }
 }

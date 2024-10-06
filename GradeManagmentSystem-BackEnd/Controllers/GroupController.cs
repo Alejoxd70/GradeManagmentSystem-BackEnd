@@ -1,6 +1,7 @@
 ﻿using GradeManagmentSystem_BackEnd.Model;
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 {
@@ -44,11 +45,20 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult> CreateGroup(string name)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _groupService.CreateGroupAsync(name);
+            try
+            {
+                await _groupService.CreateGroupAsync(name);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); ;
+            }
 
             return StatusCode(StatusCodes.Status201Created, "Group created succesfully");
         }
@@ -59,6 +69,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> UpdateGroup(int id, string name)
         {
@@ -73,7 +85,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e.Message);
             }
         }
 
@@ -81,6 +93,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> SoftDeleteGroup(int id)
         {
@@ -94,7 +108,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e?.Message);
             }
         }
 

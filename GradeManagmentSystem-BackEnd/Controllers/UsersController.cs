@@ -3,6 +3,7 @@ using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using static GradeManagmentSystem_BackEnd.Services.ISubjectTeacherService;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 
@@ -47,12 +48,19 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult> CreateUser(string name, string lastName, string email, string password, string identification, int userTypeId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _userService.CreateUserAsync(name, lastName, email, password, identification, userTypeId);
+            try
+            {
+                await _userService.CreateUserAsync(name, lastName, email, password, identification, userTypeId);
+            } catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); ;
+            }
 
 
             return StatusCode(StatusCodes.Status201Created, "User created successfully.");
@@ -64,18 +72,25 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         public async Task<ActionResult> ValidateUser(string email, string password)
         {
             if(email == null || password == null) return BadRequest(ModelState);
 
             // Validate the user
-            var isValid = await _userService.ValidateUserAsync(email, password);
-
-            if (isValid)
+            try
             {
-                // Handle successful login (e.g., return JWT token or success message)
-                return Ok(new { Message = "Login successful" });
+                var isValid = await _userService.ValidateUserAsync(email, password);
+                if (isValid)
+                {
+                    // Handle successful login  
+                    return Ok(new { Message = "Login successful" });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); ;
             }
 
             // Handle failed login
@@ -88,6 +103,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> UpdateUser(int id, string name, string lastName, string email, string password, string identification, int userTypeId)
         {
@@ -102,7 +119,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e.Message);
             }
         }
 
@@ -110,6 +127,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
         public async Task<IActionResult> SoftDeleteUser(int id)
         {
             var user = await _userService.GetUserByIdAsync(id);
@@ -123,7 +142,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e?.Message);
             }
         }
 
