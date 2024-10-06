@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Permission>> GetAllPermissionsAsync();
         Task<Permission> GetPermissionByIdAsync(int id);
-        Task CreatePermissionAsync(Permission permission);
-        Task UpdatePermissionAsync(Permission permission);
+        Task CreatePermissionAsync(string name);
+        Task UpdatePermissionAsync(int id, string name);
         Task SoftDeletePermissionAsync(int id);
     }
     public class PermissionService : IPermissionService
@@ -33,18 +33,18 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
 
-        public async Task CreatePermissionAsync(Permission permission)
+        public async Task CreatePermissionAsync(string name)
         {
-            await _permissionRepository.CreatePermissionAsync(permission);
+            await _permissionRepository.CreatePermissionAsync(name);
         }
 
     
-        public async Task UpdatePermissionAsync(Permission permission)
+        public async Task UpdatePermissionAsync(int id, string name)
         {
             
             try
             {
-                await _permissionRepository.UpdatePermissionAsync(permission);
+                await _permissionRepository.UpdatePermissionAsync(id, name);
 
             }
             catch (Exception e)

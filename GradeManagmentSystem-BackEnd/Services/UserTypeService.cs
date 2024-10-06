@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<UserType>> GetAllUserTypesAsync();
         Task<UserType> GetUserTypeByIdAsync(int id);
-        Task CreateUserTypeAsync(UserType userType);
-        Task UpdateUserTypeAsync(UserType userType);
+        Task CreateUserTypeAsync(string name);
+        Task UpdateUserTypeAsync(int id, string name);
         Task SoftDeleteUserTypeAsync(int id);
     }
 
@@ -34,18 +34,18 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a userType
-        public async Task CreateUserTypeAsync(UserType userType)
+        public async Task CreateUserTypeAsync(string name)
         {
-            await _userTypeRepository.CreateUserTypeAsync(userType);
+            await _userTypeRepository.CreateUserTypeAsync(name);
         }
 
         // Update a userType
-        public async Task UpdateUserTypeAsync(UserType userType)
+        public async Task UpdateUserTypeAsync(int id, string name)
         {
             
             try
             {
-                await _userTypeRepository.UpdateUserTypeAsync(userType);
+                await _userTypeRepository.UpdateUserTypeAsync(id, name);
 
             }
             catch (Exception e)

@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Student>> GetAllStudentsAsync();
         Task<Student> GetStudentByIdAsync(int id);
-        Task CreateStudentAsync(Student student);
-        Task UpdateStudentAsync(Student student);
+        Task CreateStudentAsync(string student_code, int userId, int attendantId );
+        Task UpdateStudentAsync(int id, string student_code, int userId, int attendantId );
         Task SoftDeleteStudentAsync(int id);
     }
     public class StudentService : IStudentService
@@ -34,17 +34,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a student
-        public async Task CreateStudentAsync(Student student)
+        public async Task CreateStudentAsync(string student_code,int userId, int attendantId )
         {
-            await _studentRepository.CreateStudentAsync(student);
+            await _studentRepository.CreateStudentAsync(student_code, userId, attendantId );
         }
 
         // Update a student
-        public async Task UpdateStudentAsync(Student student)
+        public async Task UpdateStudentAsync(int id, string student_code, int userId, int attendantId )
         {
             try
             {
-                await _studentRepository.UpdateStudentAsync(student);
+                await _studentRepository.UpdateStudentAsync(id, student_code, userId, attendantId );
             }
             catch (Exception e)
             {

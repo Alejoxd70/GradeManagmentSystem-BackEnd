@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<Attendant>> GetAllAttendantsAsync();
         Task<Attendant> GetAttendantByIdAsync(int id);
-        Task CreateAttendantAsync(Attendant attendant);
-        Task UpdateAttendantAsync(Attendant attendant);
+        Task CreateAttendantAsync(string name, string lastName, string relationship);
+        Task UpdateAttendantAsync(int id, string name, string lastName, string relationship);
         Task SoftDeleteAttendantAsync(int id);
     }
     public class AttendantRepository : IAttendantRepository
@@ -37,16 +37,29 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         // Create Attendant
-        public async Task CreateAttendantAsync(Attendant attendant)
+        public async Task CreateAttendantAsync(string name, string lastName, string relationship)
         {
+            var attendant = new Attendant
+            {
+                Name = name,
+                LastName = lastName,
+                Relationship = relationship
+            };
+
             await _context.Attendants.AddAsync(attendant);
             await _context.SaveChangesAsync();
         }
 
 
         // Update Attendant
-        public async Task UpdateAttendantAsync(Attendant attendant)
+        public async Task UpdateAttendantAsync(int id, string name, string lastName, string relationship)
         {
+            var attendant = await _context.Attendants.FindAsync(id) ?? throw new Exception("Attendant not found");
+
+            attendant.LastName = lastName;
+            attendant.Relationship = relationship;
+            attendant.Name = name;
+
             try
             {
                 _context.Attendants.Update(attendant);

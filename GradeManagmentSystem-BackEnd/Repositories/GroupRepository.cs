@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<Group>> GetAllGroupsAsync();
         Task<Group> GetGroupByIdAsync(int id);
-        Task CreateGroupAsync(Group group);
-        Task UpdateGroupAsync(Group group);
+        Task CreateGroupAsync(string name);
+        Task UpdateGroupAsync(int id, string name);
         Task SoftDeleteGroupAsync(int id);
     }
     public class GroupRepository : IGroupRepository
@@ -37,25 +37,36 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             }
 
             // Create group
-            public async Task CreateGroupAsync(Group group)
+            public async Task CreateGroupAsync(string name)
             {
+                var group = new Group
+                {
+                    GroupName = name
+                };
+
                 await _context.Groups.AddAsync(group);
                 await _context.SaveChangesAsync();
             }
 
 
             // Update group
-            public async Task UpdateGroupAsync(Group group)
+            public async Task UpdateGroupAsync(int id, string name)
             {
-            try
-            {
-                _context.Groups.Update(group);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            } 
+                // Fecht Group
+                var group = await _context.Groups.FindAsync(id) ?? throw new Exception("Group not found");  
+
+                //update
+                group.GroupName = name;
+
+                try
+                {
+                    _context.Groups.Update(group);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                } 
             }
 
 

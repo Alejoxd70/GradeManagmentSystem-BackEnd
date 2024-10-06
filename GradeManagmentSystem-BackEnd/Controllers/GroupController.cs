@@ -44,12 +44,13 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateGroup([FromForm] Group group)
+        public async Task<ActionResult> CreateGroup(string name)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _groupService.CreateGroupAsync(group);
-            return CreatedAtAction(nameof(GetGroupById), new { id = group.Id }, group);
+            await _groupService.CreateGroupAsync(name);
+
+            return StatusCode(StatusCodes.Status201Created, "Group created succesfully");
         }
 
 
@@ -59,15 +60,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateGroup(int id, [FromForm] Group group)
+        public async Task<IActionResult> UpdateGroup(int id, string name)
         {
-            if (id != group.Id) return BadRequest();
 
             var existingGroup = await _groupService.GetGroupByIdAsync(id);
             if (existingGroup == null) return NotFound();
 
-            await _groupService.UpdateGroupAsync(group);
-            return NoContent();
+            try
+            {
+                await _groupService.UpdateGroupAsync(id, name);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a group
@@ -80,8 +87,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var group = await _groupService.GetGroupByIdAsync(id);
             if (group == null) return NotFound();
 
-            await _groupService.SoftDeleteGroupAsync(id);
-            return NoContent();
+            try
+            {
+                await _groupService.SoftDeleteGroupAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
     }

@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<Subject>> GetAllSubjectsAsync();
         Task<Subject> GetSubjectByIdAsync(int id);
-        Task CreateSubjectAsync(Subject subject);
-        Task UpdateSubjectAsync(Subject subject);
+        Task CreateSubjectAsync(string name, string description);
+        Task UpdateSubjectAsync(int id, string name, string description);
         Task SoftDeleteSubjectAsync(int id);
     }
     public class SubjectRepository : ISubjectRepository
@@ -37,16 +37,30 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         // Create subject
-        public async Task CreateSubjectAsync(Subject subject)
+        public async Task CreateSubjectAsync(string name, string description)
         {
+            var subject = new Subject
+            {
+                Subjectname = name,
+                Description = description
+            };
+
             await _context.Subjects.AddAsync(subject);
             await _context.SaveChangesAsync();
         }
 
 
         // Update subject
-        public async Task UpdateSubjectAsync(Subject subject)
+        public async Task UpdateSubjectAsync(int id, string name, string description)
         {
+            // Fecth the subject
+            var subject = await _context.Subjects.FindAsync(id) ?? throw new Exception("Subject not Found");
+
+            // Update
+            subject.Description = description;
+            subject.Subjectname = name;
+
+
             try
             {
                 _context.Subjects.Update(subject);

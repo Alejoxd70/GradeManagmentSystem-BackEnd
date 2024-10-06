@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Teacher>> GetAllTeachersAsync();
         Task<Teacher> GetTeacherByIdAsync(int id);
-        Task CreateTeacherAsync(Teacher teacher);
-        Task UpdateTeacherAsync(Teacher teacher);
+        Task CreateTeacherAsync(int userId, string specialitazion);
+        Task UpdateTeacherAsync(int id, int userId, string specialitazion);
         Task SoftDeleteTeacherAsync(int id);
     }
     public class TeacherService : ITeacherService
@@ -33,17 +33,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a teacher
-        public async Task CreateTeacherAsync(Teacher teacher)
+        public async Task CreateTeacherAsync(int userId, string specialitazion)
         {
-            await _teacherRepository.CreateTeacherAsync(teacher);
+            await _teacherRepository.CreateTeacherAsync(userId, specialitazion);
         }
 
         // Update a teacher
-        public async Task UpdateTeacherAsync(Teacher teacher)
+        public async Task UpdateTeacherAsync(int id, int userId, string specialitazion)
         {
             try
             {
-                await _teacherRepository.UpdateTeacherAsync(teacher);
+                await _teacherRepository.UpdateTeacherAsync(id, userId, specialitazion);
             }
             catch (Exception e)
             {

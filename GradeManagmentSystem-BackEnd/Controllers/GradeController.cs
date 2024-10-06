@@ -44,12 +44,13 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateGrade([FromForm] Grade grade)
+        public async Task<ActionResult> CreateGrade(string value, int assigmentId, int studentId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _gradeService.CreateGradeAsync(grade);
-            return CreatedAtAction(nameof(GetGradeById), new { id = grade.Id }, grade);
+            await _gradeService.CreateGradeAsync(value, assigmentId, studentId);
+
+            return StatusCode(StatusCodes.Status201Created, "Grade created succesfully");
         }
 
 
@@ -59,15 +60,22 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateGrade(int id, [FromForm] Grade grade)
+        public async Task<IActionResult> UpdateGrade(int id, string value, int assigmentId, int studentId)
         {
-            if (id != grade.Id) return BadRequest();
 
             var existingGrade = await _gradeService.GetGradeByIdAsync(id);
+
             if (existingGrade == null) return NotFound();
 
-            await _gradeService.UpdateGradeAsync(grade);
-            return NoContent();
+            try
+            {
+                await _gradeService.UpdateGradeAsync(id, value, assigmentId, studentId);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a grade
@@ -80,8 +88,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var grade = await _gradeService.GetGradeByIdAsync(id);
             if (grade == null) return NotFound();
 
-            await _gradeService.SoftDeleteGradeAsync(id);
-            return NoContent();
+            try
+            {
+                await _gradeService.SoftDeleteGradeAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
     }

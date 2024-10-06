@@ -44,12 +44,14 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreatePermissionUserType([FromForm] PermissionUserType permissionUserType)
+        public async Task<ActionResult> CreatePermissionUserType( int userTypeId, int permissionId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _permissionUserTypeService.CreatePermissionUserTypeAsync(permissionUserType);
-            return CreatedAtAction(nameof(GetPermissionUserTypesById), new { id = permissionUserType.Id }, permissionUserType);
+            await _permissionUserTypeService.CreatePermissionUserTypeAsync(userTypeId, permissionId);
+
+            return StatusCode(StatusCodes.Status201Created, "Permission UserType created successfully.");
+
         }
 
 
@@ -58,15 +60,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdatePermissionUserType(int id, [FromForm] PermissionUserType permissionUserType)
+        public async Task<IActionResult> UpdatePermissionUserType(int id,  int userTypeId, int permissionId)
         {
-            if (id != permissionUserType.Id) return BadRequest();
 
             var existingPermissionUserType = await _permissionUserTypeService.GetPermissionUserTypeByIdAsync(id);
             if (existingPermissionUserType == null) return NotFound();
 
-            await _permissionUserTypeService.UpdatePermissionUserTypeAsync(permissionUserType);
-            return NoContent();
+            try
+            {
+                await _permissionUserTypeService.UpdatePermissionUserTypeAsync(id, userTypeId, permissionId);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
     
@@ -79,8 +87,16 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var permissionUserType = await _permissionUserTypeService.GetPermissionUserTypeByIdAsync(id);
             if (permissionUserType == null) return NotFound();
 
-            await _permissionUserTypeService.SoftDeletePermissionUserTypeAsync(id);
-            return NoContent();
+
+            try
+            {
+                await _permissionUserTypeService.SoftDeletePermissionUserTypeAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

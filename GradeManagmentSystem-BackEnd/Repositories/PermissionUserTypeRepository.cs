@@ -9,8 +9,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<PermissionUserType>> GetAllPermissionUserTypesAsync();
         Task<PermissionUserType> GetPermissionUserTypeByIdAsync(int id);
-        Task CreatePermissionUserTypeAsync(PermissionUserType permissionUserType);
-        Task UpdatePermissionUserTypeAsync(PermissionUserType permissionUserType);
+        Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId);
+        Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId);
         Task SoftDeletePermissionUserTypeAsync(int id);
     }
     public class PermissionUserTypeRepository : IPermissionUserTypeRepository
@@ -27,6 +27,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.PermissionUserTypes
                 .Where(s => !s.IsDeleted) // Avoid deleted items
+                .Include(p => p.UserType)
+                .Include(p => p.Permission)
                 .ToListAsync();
         }
 
@@ -34,21 +36,43 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task<PermissionUserType> GetPermissionUserTypeByIdAsync(int id)
         {
             return await _context.PermissionUserTypes.AsNoTracking()
+                .Include(p => p.UserType)
+                .Include(p => p.Permission)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
         
-        public async Task CreatePermissionUserTypeAsync(PermissionUserType permissionUserType)
+        public async Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId)
         {
+            // Fetch foreing keys if exists
+            var userType = await _context.UserTypes.FindAsync(userTypeId) ?? throw new Exception("UserType not found");
+            var permission = await _context.Permissions.FindAsync(permissionId) ?? throw new Exception("Permission not found");
+
+            var permissionUserType = new PermissionUserType
+            {
+                Permission = permission,
+                UserType = userType
+            };
+
             await _context.PermissionUserTypes.AddAsync(permissionUserType);
             await _context.SaveChangesAsync();
         }
 
 
         
-        public async Task UpdatePermissionUserTypeAsync(PermissionUserType permissionUserType)
+        public async Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId)
         {
-            
+            // Fetch the UserType
+            var permissionUserType = await _context.PermissionUserTypes.FindAsync(id) ?? throw new Exception("PermissionUserType not found");
+
+            // Fetch foreing keys if exists
+            var userType = await _context.UserTypes.FindAsync(userTypeId) ?? throw new Exception("UserType not found");
+            var permission = await _context.Permissions.FindAsync(permissionId) ?? throw new Exception("UserType not found");
+
+            permissionUserType.Permission = permission;
+            permissionUserType.UserType = userType;
+
+
             try
             {
                 _context.PermissionUserTypes.Update(permissionUserType);

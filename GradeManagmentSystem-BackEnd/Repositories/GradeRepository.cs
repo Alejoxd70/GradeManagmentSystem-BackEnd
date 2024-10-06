@@ -9,8 +9,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<Grade>> GetAllGradesAsync();
         Task<Grade> GetGradeByIdAsync(int id);
-        Task CreateGradeAsync(Grade grade);
-        Task UpdateGradeAsync(Grade grade);
+        Task CreateGradeAsync(string value, int assigmentId, int studentId);
+        Task UpdateGradeAsync(int id, string value, int assigmentId, int studentId);
         Task SoftDeleteGradeAsync(int id);
     }
     public class GradeRepository : IGradeRepository
@@ -27,6 +27,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.Grades
                 .Where(s => !s.IsDeleted) // Avoid deleted items
+                .Include(g => g.Student)
+                .Include(g => g.Assigment)
                 .ToListAsync();
         }
 
@@ -34,20 +36,45 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task<Grade> GetGradeByIdAsync(int id)
         {
             return await _context.Grades.AsNoTracking()
+                .Include(g => g.Student)
+                .Include(g => g.Assigment)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
         // Create grade
-        public async Task CreateGradeAsync(Grade grade)
+        public async Task CreateGradeAsync(string value, int assigmentId, int studentId)
         {
+            // Fetch foreign keys if exist
+            var assigment = await _context.Assigments.FindAsync(assigmentId) ?? throw new Exception("Assigment not found");
+            var student = await _context.Students.FindAsync(studentId) ?? throw new Exception("Student not found");
+
+            var grade = new Grade
+            {
+                Value = value,
+                Assigment = assigment,
+                Student = student,
+            };
+
             await _context.Grades.AddAsync(grade);
             await _context.SaveChangesAsync();
         }
 
 
         // Update grade
-        public async Task UpdateGradeAsync(Grade grade)
+        public async Task UpdateGradeAsync(int id, string value, int assigmentId, int studentId)
         {
+            // Fetch grade
+            var grade = await _context.Grades.FindAsync(id) ?? throw new Exception("Grade not found");
+
+            // Fetch foreign keys if exist
+            var assigment = await _context.Assigments.FindAsync(assigmentId) ?? throw new Exception("Assigment not found");
+            var student = await _context.Students.FindAsync(studentId) ?? throw new Exception("Student not found");
+
+            grade.Student = student;
+            grade.Assigment = assigment;
+            grade.Value = value;
+
+
             try
             {
                 _context.Grades.Update(grade);

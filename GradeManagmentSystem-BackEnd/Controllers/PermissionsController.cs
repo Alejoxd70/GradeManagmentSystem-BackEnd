@@ -44,12 +44,13 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreatePermission([FromForm] Permission permission)
+        public async Task<ActionResult> CreatePermission(string name)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _permissionService.CreatePermissionAsync(permission);
-            return CreatedAtAction(nameof(GetPermissionsById), new { id = permission.Id }, permission);
+            await _permissionService.CreatePermissionAsync(name);
+
+            return StatusCode(StatusCodes.Status201Created, "Permmission created successfully");
         }
 
 
@@ -59,15 +60,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdatePermission(int id, [FromForm] Permission permission)
+        public async Task<IActionResult> UpdatePermission(int id, string name)
         {
-            if (id != permission.Id) return BadRequest();
 
             var existingPermission = await _permissionService.GetPermissionByIdAsync(id);
             if (existingPermission == null) return NotFound();
 
-            await _permissionService.UpdatePermissionAsync(permission);
-            return NoContent();
+            try
+            {
+                await _permissionService.UpdatePermissionAsync(id, name);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
     
@@ -80,8 +87,16 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var permission = await _permissionService.GetPermissionByIdAsync(id);
             if (permission == null) return NotFound();
 
-            await _permissionService.SoftDeletePermissionAsync(id);
-            return NoContent();
+            
+            try
+            {
+                await _permissionService.SoftDeletePermissionAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

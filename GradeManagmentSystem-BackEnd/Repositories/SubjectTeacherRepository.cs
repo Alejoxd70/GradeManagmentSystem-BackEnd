@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<SubjectTeacher>> GeAlltSubjectTeachersAsync();
         Task <SubjectTeacher> GetSubjectTeacherByIdAsync (int id);
-        Task CreateSubjectTeacherAsync (SubjectTeacher subjectTeacher);
-        Task UpdateSubjectTeacherAsync (SubjectTeacher subjectTeacher);
+        Task CreateSubjectTeacherAsync (int teacherId, int subjectId, int groupYearId);
+        Task UpdateSubjectTeacherAsync (int id, int teacherId, int subjectId, int groupYearId);
         Task SoftDeleteSubjectTeacherAsync (int id);
     }
     public class SubjectTeacherRepository : ISubjectTeacherRepository
@@ -22,8 +22,20 @@ namespace GradeManagmentSystem_BackEnd.Repositories
 
 
         //Create SubjectTeacher
-        public async Task CreateSubjectTeacherAsync(SubjectTeacher subjectTeacher)
+        public async Task CreateSubjectTeacherAsync(int teacherId, int subjectId, int groupYearId)
         {
+            // Fetch the ids
+            var teacher = await _context.Teachers.FindAsync(teacherId) ?? throw new Exception("Teacher not found");
+            var subject = await _context.Subjects.FindAsync(subjectId) ?? throw new Exception("Subject not found");
+            var groupYear = await _context.GroupYears.FindAsync(groupYearId) ?? throw new Exception("GroupYear not found");
+
+            var subjectTeacher = new SubjectTeacher
+            {
+                Teacher = teacher,
+                Subject = subject,
+                GroupYear = groupYear
+            };
+
             await _context.SubjectTeachers.AddAsync(subjectTeacher);
             await _context.SaveChangesAsync();
         }
@@ -33,6 +45,9 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.SubjectTeachers
                 .Where(s => !s.IsDeleted)
+                .Include(s => s.Teacher)
+                .Include(s => s.Subject)
+                .Include(s => s.GroupYear)
                 .ToListAsync();
         }
 
@@ -40,6 +55,9 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task<SubjectTeacher> GetSubjectTeacherByIdAsync(int id)
         {
             return await _context.SubjectTeachers.AsNoTracking()
+                .Include(s => s.Teacher)
+                .Include(s => s.Subject)
+                .Include(s => s.GroupYear)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
@@ -55,8 +73,21 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         //Update Subject Teacher
-        public async Task UpdateSubjectTeacherAsync(SubjectTeacher subjectTeacher)
+        public async Task UpdateSubjectTeacherAsync(int id, int teacherId, int subjectId, int groupYearId)
         {
+            // Fetch the SubjectTeacher Id
+            var subjectTeacher = await _context.SubjectTeachers.FindAsync(id) ?? throw new Exception("SubjectTeacher not found");
+
+            // Fetch the foreign keys
+            var teacher = await _context.Teachers.FindAsync(teacherId) ?? throw new Exception("Teacher not found");
+            var subject = await _context.Subjects.FindAsync(subjectId) ?? throw new Exception("Subject not found");
+            var groupYear = await _context.GroupYears.FindAsync(groupYearId) ?? throw new Exception("GroupYear not found");
+
+            // Update
+            subjectTeacher.Teacher = teacher;
+            subjectTeacher.Subject = subject;
+            subjectTeacher.GroupYear = groupYear;
+
             try
             {
                 _context.SubjectTeachers.Update(subjectTeacher);

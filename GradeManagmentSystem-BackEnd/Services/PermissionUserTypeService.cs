@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<PermissionUserType>> GetAllPermissionUserTypesAsync();
         Task<PermissionUserType> GetPermissionUserTypeByIdAsync(int id);
-        Task CreatePermissionUserTypeAsync(PermissionUserType permissionUserType);
-        Task UpdatePermissionUserTypeAsync(PermissionUserType permissionUserType);
+        Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId);
+        Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId);
         Task SoftDeletePermissionUserTypeAsync(int id);
     }
     public class PermissionUserTypeService : IPermissionUserTypeService
@@ -32,17 +32,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
 
-        public async Task CreatePermissionUserTypeAsync(PermissionUserType permissionUserType)
+        public async Task CreatePermissionUserTypeAsync(int userTypeId, int permissionId)
         {
-            await _permissionUserTypeRepository.CreatePermissionUserTypeAsync(permissionUserType);
+            await _permissionUserTypeRepository.CreatePermissionUserTypeAsync(userTypeId, permissionId);
         }
 
-        public async Task UpdatePermissionUserTypeAsync(PermissionUserType permissionUserType)
+        public async Task UpdatePermissionUserTypeAsync(int id, int userTypeId, int permissionId)
         {
             
             try
             {
-                await _permissionUserTypeRepository.UpdatePermissionUserTypeAsync(permissionUserType);
+                await _permissionUserTypeRepository.UpdatePermissionUserTypeAsync(id, userTypeId, permissionId);
 
             }
             catch (Exception e)

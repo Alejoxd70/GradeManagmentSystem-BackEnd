@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Assigment>> GetAllAssigmentsAsync();
         Task<Assigment> GetAssigmentByIdAsync(int id);
-        Task CreateAssigmentAsync(Assigment assigment);
-        Task UpdateAssigmentAsync( Assigment assigment);
+        Task CreateAssigmentAsync(string name, string description, DateOnly date, int subjectTeacherId);
+        Task UpdateAssigmentAsync(int id, string name, string description, DateOnly date, int subjectTeacherId);
         Task SoftDeleteAssigmentAsync(int id);
     }
     public class AssigmentService : IAssigmentService
@@ -21,9 +21,9 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         //Create Assigment
-        public async Task CreateAssigmentAsync(Assigment assigment)
+        public async Task CreateAssigmentAsync(string name, string description, DateOnly date, int subjectTeacherId)
         {
-            await _assigmentRepository.CreateAssigmentAsync(assigment);
+            await _assigmentRepository.CreateAssigmentAsync(name, description, date, subjectTeacherId);
         }
 
         //Get All Assigment
@@ -44,11 +44,11 @@ namespace GradeManagmentSystem_BackEnd.Services
             await _assigmentRepository.SoftDeleteAssigmentAsync(id);
         }
         //Update Assigment
-        public async Task UpdateAssigmentAsync(Assigment assigment)
+        public async Task UpdateAssigmentAsync(int id, string name, string description, DateOnly date, int subjectTeacherId)
         {
             try
             {
-                await _assigmentRepository.UpdateAssigmentAsync(assigment);
+                await _assigmentRepository.UpdateAssigmentAsync(id, name, description, date, subjectTeacherId);
             }
             catch (Exception e)
             {

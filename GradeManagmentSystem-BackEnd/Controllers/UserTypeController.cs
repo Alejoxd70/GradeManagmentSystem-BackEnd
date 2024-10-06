@@ -46,12 +46,14 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateUserType([FromForm] UserType userType)
+        public async Task<ActionResult> CreateUserType(string name)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _userTypeService.CreateUserTypeAsync(userType);
-            return CreatedAtAction(nameof(GetUserTypeById), new { id = userType.Id }, userType);
+            await _userTypeService.CreateUserTypeAsync(name);
+
+            return StatusCode(StatusCodes.Status201Created, "UserType created successfully.");
+
         }
 
 
@@ -61,15 +63,22 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateUserType(int id, [FromForm] UserType userType)
+        public async Task<IActionResult> UpdateUserType(int id, string name)
         {
-            if (id != userType.Id) return BadRequest();
 
             var existingUserType = await _userTypeService.GetUserTypeByIdAsync(id);
             if (existingUserType == null) return NotFound();
 
-            await _userTypeService.UpdateUserTypeAsync(userType);
-            return NoContent();
+           
+            try
+            {
+                await _userTypeService.UpdateUserTypeAsync(id, name);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a userType
@@ -82,8 +91,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var userType = await _userTypeService.GetUserTypeByIdAsync(id);
             if (userType == null) return NotFound();
 
-            await _userTypeService.SoftDeleteUserTypeAsync(id);
-            return NoContent();
+            try
+            {
+                await _userTypeService.SoftDeleteUserTypeAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
     }

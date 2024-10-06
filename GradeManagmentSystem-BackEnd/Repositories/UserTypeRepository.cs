@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<UserType>> GetAllUserTypesAsync();
         Task<UserType> GetUserTypeByIdAsync(int id);
-        Task CreateUserTypeAsync(UserType usertype);
-        Task UpdateUserTypeAsync(UserType usertype);
+        Task CreateUserTypeAsync(string name);
+        Task UpdateUserTypeAsync(int id, string name);
         Task SoftDeleteUserTypeAsync(int id);
     }
 
@@ -38,20 +38,28 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         // Create UserType
-        public async Task CreateUserTypeAsync(UserType usertype)
+        public async Task CreateUserTypeAsync(string name)
         {
-            await _context.UserTypes.AddAsync(usertype);
+            var userType = new UserType
+            {
+                UserTypeName = name,
+            };
+
+            await _context.UserTypes.AddAsync(userType);
             await _context.SaveChangesAsync();
         }
 
 
         // Update UserType
-        public async Task UpdateUserTypeAsync(UserType usertype)
+        public async Task UpdateUserTypeAsync(int id, string name)
         {
-            
+            var userType = await _context.UserTypes.FindAsync(id) ?? throw new Exception("UserType not found");
+
+            userType.UserTypeName = name;
+
             try
             {
-                _context.UserTypes.Update(usertype);
+                _context.UserTypes.Update(userType);
                 await _context.SaveChangesAsync();
 
             }

@@ -9,8 +9,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<Permission>> GetAllPermissionsAsync();
         Task<Permission> GetPermissionByIdAsync(int id);
-        Task CreatePermissionAsync(Permission permission);
-        Task UpdatePermissionAsync(Permission permission);
+        Task CreatePermissionAsync(string name);
+        Task UpdatePermissionAsync(int id, string name);
         Task SoftDeletePermissionAsync(int id);
     }
     public class PermissionRepository : IPermissionRepository
@@ -38,15 +38,25 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         
-        public async Task CreatePermissionAsync(Permission permission)
+        public async Task CreatePermissionAsync(string name)
         {
+            var permission = new Permission
+            {
+                PermissionName = name
+            };
+
             await _context.Permissions.AddAsync(permission);
             await _context.SaveChangesAsync();
         }
 
 
-        public async Task UpdatePermissionAsync(Permission permission)
+        public async Task UpdatePermissionAsync(int id, string name)
         {
+            // Fetch the Permission
+            var permission = await _context.Permissions.FindAsync(id) ?? throw new Exception("Permission not found");
+
+            // update
+            permission.PermissionName = name;
             
             try
             {

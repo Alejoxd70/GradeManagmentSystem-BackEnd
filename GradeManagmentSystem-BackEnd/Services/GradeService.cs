@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Grade>> GetAllGradesAsync();
         Task<Grade> GetGradeByIdAsync(int id);
-        Task CreateGradeAsync(Grade grade);
-        Task UpdateGradeAsync(Grade grade);
+        Task CreateGradeAsync(string value, int assigmentId, int studentId);
+        Task UpdateGradeAsync(int id, string value, int assigmentId, int studentId);
         Task SoftDeleteGradeAsync(int id);
     }
 
@@ -34,17 +34,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a Grade
-        public async Task CreateGradeAsync(Grade grade)
+        public async Task CreateGradeAsync(string value, int assigmentId, int studentId)
         {
-            await _gradeRepository.CreateGradeAsync(grade);
+            await _gradeRepository.CreateGradeAsync(value, assigmentId, studentId);
         }
 
         // Update a grade
-        public async Task UpdateGradeAsync(Grade grade)
+        public async Task UpdateGradeAsync(int id, string value, int assigmentId, int studentId)
         {
             try
             {
-                await _gradeRepository.UpdateGradeAsync(grade);
+                await _gradeRepository.UpdateGradeAsync(id, value, assigmentId, studentId);
             }
             catch (Exception e)
             {

@@ -45,12 +45,14 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateAssigment([FromForm] Assigment assigment)
+        public async Task<ActionResult> CreateAssigment(string name, string description, DateOnly date, int subjectTeacherId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _assigmentService.CreateAssigmentAsync(assigment);
-            return CreatedAtAction(nameof(GetAssigmentById), new { id = assigment.Id }, assigment);
+            await _assigmentService.CreateAssigmentAsync(name, description, date, subjectTeacherId);
+
+            return StatusCode(StatusCodes.Status201Created, "Assigment created succesfully");
+
         }
 
 
@@ -60,15 +62,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateAssigment(int id, [FromForm] Assigment assigment)
+        public async Task<IActionResult> UpdateAssigment(int id, string name, string description, DateOnly date, int subjectTeacherId)
         {
-            if (id != assigment.Id) return BadRequest();
 
             var existingAssigment = await _assigmentService.GetAssigmentByIdAsync(id);
             if (existingAssigment == null) return NotFound();
 
-            await _assigmentService.UpdateAssigmentAsync(assigment);
-            return NoContent();
+            try
+            {
+                await _assigmentService.UpdateAssigmentAsync(id, name, description, date, subjectTeacherId);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a Assigment
@@ -81,8 +89,16 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var assigment = await _assigmentService.GetAssigmentByIdAsync(id);
             if (assigment == null) return NotFound();
 
-            await _assigmentService.SoftDeleteAssigmentAsync(id);
-            return NoContent();
+            try
+            {
+                await _assigmentService.SoftDeleteAssigmentAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch( Exception e)
+            {
+                throw;
+            }
+
         }
     }
 }
