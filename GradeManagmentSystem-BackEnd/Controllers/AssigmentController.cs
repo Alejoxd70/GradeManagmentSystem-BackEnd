@@ -45,11 +45,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult> CreateAssigment(string name, string description, DateOnly date, int subjectTeacherId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _assigmentService.CreateAssigmentAsync(name, description, date, subjectTeacherId);
+            try
+            {
+                await _assigmentService.CreateAssigmentAsync(name, description, date, subjectTeacherId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); ;
+            }
+
 
             return StatusCode(StatusCodes.Status201Created, "Assigment created succesfully");
 
@@ -61,6 +71,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> UpdateAssigment(int id, string name, string description, DateOnly date, int subjectTeacherId)
         {
@@ -75,7 +87,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e.Message);
             }
         }
 
@@ -83,6 +95,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
 
         public async Task<IActionResult> SoftDeleteAssigment(int id)
         {
@@ -96,7 +109,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch( Exception e)
             {
-                throw;
+                return StatusCode(404, e?.Message);
             }
 
         }

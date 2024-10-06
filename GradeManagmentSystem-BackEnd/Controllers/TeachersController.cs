@@ -46,11 +46,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult> CreateTeacher(int userId, string specialitazion)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _teacherService.CreateTeacherAsync(userId, specialitazion);
+
+            try
+            {
+                await _teacherService.CreateTeacherAsync(userId, specialitazion);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(404, ex.Message); 
+            }
 
             return StatusCode(StatusCodes.Status201Created, "Teacher created successfully");
         }
@@ -61,6 +71,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> UpdateTeacher(int id, int userId, string specialitazion)
         {
@@ -75,7 +87,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e.Message);
             }
         }
 
@@ -83,6 +95,8 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
 
         public async Task<IActionResult> SoftDeleteTeacher(int id)
         {
@@ -96,7 +110,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(404, e?.Message);
             }
         }
     }
