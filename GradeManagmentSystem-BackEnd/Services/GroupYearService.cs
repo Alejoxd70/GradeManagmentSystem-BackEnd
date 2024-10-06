@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<GroupYear>> GetAllGroupYearsAsync();
         Task <GroupYear> GetGroupYearByIdAsync(int id);
-        Task CreateGroupYearAsync (GroupYear groupYear);
-        Task UpdateGroupYearAsync (GroupYear groupYear);
+        Task CreateGroupYearAsync (string year, int studentId, int groupId);
+        Task UpdateGroupYearAsync (int id, string year, int studentId, int groupId);
 
         Task SoftDeleteGroupYearAsync (int id);
     }
@@ -21,9 +21,9 @@ namespace GradeManagmentSystem_BackEnd.Services
             _groupYearRepository = groupYearRepository;
         }
         //Create GroupYear
-        public async Task CreateGroupYearAsync(GroupYear groupYear)
+        public async Task CreateGroupYearAsync(string year, int studentId, int groupId)
         {
-            await _groupYearRepository.CreateGroupYearAsync(groupYear);
+            await _groupYearRepository.CreateGroupYearAsync(year, studentId, groupId);
         }
 
         //Get All GroupYear
@@ -45,11 +45,11 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         //Update GroupYear
-        public async Task UpdateGroupYearAsync(GroupYear groupYear)
+        public async Task UpdateGroupYearAsync(int id, string year, int studentId, int groupId)
         {
             try
             {
-                await _groupYearRepository.UpdateGroupYearAsync(groupYear);
+                await _groupYearRepository.UpdateGroupYearAsync(id, year, studentId, groupId);
             }
             catch (Exception e)
             {

@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<SubjectTeacher>> GetAllSubjectTeachersAsync();
         Task<SubjectTeacher> GetSubjectTeacherByIdAsync(int id);
-        Task CreateeSubjectTeacherAsync(SubjectTeacher subjectTeacher);
-        Task UpdateSubjectTeacherAsync(SubjectTeacher subjectTeacher);
+        Task CreateeSubjectTeacherAsync(int teacherId, int subjectId, int groupYearId);
+        Task UpdateSubjectTeacherAsync(int id, int teacherId, int subjectId, int groupYearId);
         Task SoftDeleteSubjectTeacherAsync(int id);
 
         public class SubjectTeacherService : ISubjectTeacherService
@@ -21,9 +21,9 @@ namespace GradeManagmentSystem_BackEnd.Services
             }
 
             //Create SubjectTeacher
-            public async Task CreateeSubjectTeacherAsync(SubjectTeacher subjectTeacher)
+            public async Task CreateeSubjectTeacherAsync(int teacherId, int subjectId, int groupYearId)
             {
-                await _subjectTeacherRepository.CreateSubjectTeacherAsync(subjectTeacher);
+                await _subjectTeacherRepository.CreateSubjectTeacherAsync(teacherId, subjectId, groupYearId);
             }
 
             //Get All SubjectTeacher
@@ -45,12 +45,12 @@ namespace GradeManagmentSystem_BackEnd.Services
             }
 
             //Update SubjectTeacher
-            public async Task UpdateSubjectTeacherAsync(SubjectTeacher subjectTeacher)
+            public async Task UpdateSubjectTeacherAsync(int id, int teacherId, int subjectId, int groupYearId)
             {
                 
                 try
                 {
-                    await _subjectTeacherRepository.UpdateSubjectTeacherAsync(subjectTeacher);
+                    await _subjectTeacherRepository.UpdateSubjectTeacherAsync(id, teacherId, subjectId, groupYearId);
                 }
                 catch (Exception e)
                 {

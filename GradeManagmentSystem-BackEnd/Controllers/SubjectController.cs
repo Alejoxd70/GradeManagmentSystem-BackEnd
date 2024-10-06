@@ -44,12 +44,14 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateSubject([FromForm] Subject subject)
+        public async Task<ActionResult> CreateSubject(string name, string description)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _subjectService.CreateSubjectAsync(subject);
-            return CreatedAtAction(nameof(GetSubjectById), new { id = subject.Id }, subject);
+            await _subjectService.CreateSubjectAsync(name, description);
+
+            return StatusCode(StatusCodes.Status201Created, "Subject created successfully.");
+
         }
 
 
@@ -59,15 +61,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateSubject(int id, [FromForm] Subject subject)
+        public async Task<IActionResult> UpdateSubject(int id, string name, string description)
         {
-            if (id != subject.Id) return BadRequest();
 
             var existingSubject = await _subjectService.GetSubjectByIdAsync(id);
             if (existingSubject == null) return NotFound();
 
-            await _subjectService.UpdateSubjectAsync(subject);
-            return NoContent();
+            try
+            {
+                await _subjectService.UpdateSubjectAsync(id, name, description);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a subject
@@ -80,8 +88,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var subject = await _subjectService.GetSubjectByIdAsync(id);
             if (subject == null) return NotFound();
 
-            await _subjectService.SoftDeleteSubjectAsync(id);
-            return NoContent();
+            try
+            {
+                await _subjectService.SoftDeleteSubjectAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
     }

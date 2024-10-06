@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Subject>> GetAllSubjectsAsync();
         Task<Subject> GetSubjectByIdAsync(int id);
-        Task CreateSubjectAsync(Subject subject);
-        Task UpdateSubjectAsync(Subject subject);
+        Task CreateSubjectAsync(string name, string description);
+        Task UpdateSubjectAsync(int id, string name, string description);
         Task SoftDeleteSubjectAsync(int id);
     }
 
@@ -34,17 +34,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a Subject
-        public async Task CreateSubjectAsync(Subject subject)
+        public async Task CreateSubjectAsync(string name, string description)
         {
-            await _subjectRepository.CreateSubjectAsync(subject);
+            await _subjectRepository.CreateSubjectAsync(name, description);
         }
 
         // Update a subject
-        public async Task UpdateSubjectAsync(Subject subject)
+        public async Task UpdateSubjectAsync(int id, string name, string description)
         {
             try
             {
-                await _subjectRepository.UpdateSubjectAsync(subject);
+                await _subjectRepository.UpdateSubjectAsync(id, name, description);
             }
             catch (Exception e)
             {

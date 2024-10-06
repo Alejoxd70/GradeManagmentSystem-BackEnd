@@ -2,6 +2,7 @@
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static GradeManagmentSystem_BackEnd.Services.ISubjectTeacherService;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 {
@@ -45,12 +46,13 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateTeacher([FromForm] Teacher teacher)
+        public async Task<ActionResult> CreateTeacher(int userId, string specialitazion)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _teacherService.CreateTeacherAsync(teacher);
-            return CreatedAtAction(nameof(GetTeacherById), new { id = teacher.Id }, teacher);
+            await _teacherService.CreateTeacherAsync(userId, specialitazion);
+
+            return StatusCode(StatusCodes.Status201Created, "Teacher created successfully");
         }
 
 
@@ -60,15 +62,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateTeacher(int id, [FromForm] Teacher teacher)
+        public async Task<IActionResult> UpdateTeacher(int id, int userId, string specialitazion)
         {
-            if (id != teacher.Id) return BadRequest();
 
             var existingTeacher = await _teacherService.GetTeacherByIdAsync(id);
             if (existingTeacher == null) return NotFound();
 
-            await _teacherService.UpdateTeacherAsync(teacher);
-            return NoContent();
+            try
+            {
+                await _teacherService.UpdateTeacherAsync(id, userId, specialitazion);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a teacher
@@ -81,8 +89,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var teacher = await _teacherService.GetTeacherByIdAsync(id);
             if (teacher == null) return NotFound();
 
-            await _teacherService.SoftDeleteTeacherAsync(id);
-            return NoContent();
+            try
+            {
+                await _teacherService.SoftDeleteTeacherAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

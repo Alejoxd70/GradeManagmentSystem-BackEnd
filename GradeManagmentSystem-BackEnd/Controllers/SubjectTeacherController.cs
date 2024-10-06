@@ -45,12 +45,14 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateSubjectTeacher([FromForm] SubjectTeacher subjectTeacher)
+        public async Task<ActionResult> CreateSubjectTeacher(int teacherId, int subjectId, int groupYearId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _subjectTeacherService.CreateeSubjectTeacherAsync(subjectTeacher);
-            return CreatedAtAction(nameof(GetSubjectTeacherById), new { id =subjectTeacher.Id }, subjectTeacher);
+            await _subjectTeacherService.CreateeSubjectTeacherAsync(teacherId, subjectId, groupYearId);
+
+            return StatusCode(StatusCodes.Status201Created, "SubjectTeacher created successfully.");
+
         }
 
 
@@ -60,15 +62,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateSubjectTeacher(int id, [FromForm] SubjectTeacher subjectTeacher)
+        public async Task<IActionResult> UpdateSubjectTeacher(int id, int teacherId, int subjectId, int groupYearId)
         {
-            if (id != subjectTeacher.Id) return BadRequest();
 
             var existingSubjectTeacher = await _subjectTeacherService.GetSubjectTeacherByIdAsync(id);
             if (existingSubjectTeacher == null) return NotFound();
 
-            await _subjectTeacherService.UpdateSubjectTeacherAsync(subjectTeacher);
-            return NoContent();
+            try
+            {
+                await _subjectTeacherService.UpdateSubjectTeacherAsync(id, teacherId, subjectId, groupYearId);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a SubjectTeacher
@@ -81,8 +89,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var subjectTeacher = await _subjectTeacherService.GetSubjectTeacherByIdAsync(id);
             if (subjectTeacher == null) return NotFound();
 
-            await _subjectTeacherService.SoftDeleteSubjectTeacherAsync(id);
-            return NoContent();
+            try
+            {
+                await _subjectTeacherService.SoftDeleteSubjectTeacherAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

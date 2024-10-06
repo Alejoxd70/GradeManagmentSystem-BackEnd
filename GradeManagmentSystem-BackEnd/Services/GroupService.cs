@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Group>> GetAllGroupsAsync();
         Task<Group> GetGroupByIdAsync(int id);
-        Task CreateGroupAsync(Group group);
-        Task UpdateGroupAsync(Group group);
+        Task CreateGroupAsync(string name);
+        Task UpdateGroupAsync(int id, string name);
         Task SoftDeleteGroupAsync(int id);
     }
 
@@ -34,17 +34,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a Group
-        public async Task CreateGroupAsync(Group group)
+        public async Task CreateGroupAsync(string name)
         {
-            await _groupRepository.CreateGroupAsync(group);
+            await _groupRepository.CreateGroupAsync(name);
         }
 
         // Update a group
-        public async Task UpdateGroupAsync(Group group)
+        public async Task UpdateGroupAsync(int id, string name)
         {
             try
             {
-                await _groupRepository.UpdateGroupAsync(group);
+                await _groupRepository.UpdateGroupAsync(id, name);
             }
             catch (Exception e)
             {

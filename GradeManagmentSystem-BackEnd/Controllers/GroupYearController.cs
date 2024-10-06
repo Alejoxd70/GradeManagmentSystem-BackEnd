@@ -2,6 +2,7 @@
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 {
@@ -44,12 +45,13 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateGroupYear([FromForm] GroupYear groupYear)
+        public async Task<ActionResult> CreateGroupYear(string year, int studentId, int groupId)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _groupYearService.CreateGroupYearAsync(groupYear);
-            return CreatedAtAction(nameof(GetGroupYearById), new { id = groupYear.Id }, groupYear);
+            await _groupYearService.CreateGroupYearAsync(year, studentId, groupId);
+
+            return StatusCode(StatusCodes.Status201Created, "GroupYear successfully created");
         }
 
 
@@ -59,15 +61,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateGroupYear(int id, [FromForm] GroupYear groupYear)
+        public async Task<IActionResult> UpdateGroupYear(int id, string year, int studentId, int groupId)
         {
-            if (id != groupYear.Id) return BadRequest();
 
             var existingGroupYear = await _groupYearService.GetGroupYearByIdAsync(id);
             if (existingGroupYear == null) return NotFound();
 
-            await _groupYearService.UpdateGroupYearAsync(groupYear);
-            return NoContent();
+            try
+            {
+                await _groupYearService.UpdateGroupYearAsync(id, year, studentId, groupId);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a GroupYear
@@ -80,8 +88,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var groupyear = await _groupYearService.GetGroupYearByIdAsync(id);
             if (groupyear == null) return NotFound();
 
-            await _groupYearService.SoftDeleteGroupYearAsync(id);
-            return NoContent();
+            try
+            {
+                await _groupYearService.SoftDeleteGroupYearAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

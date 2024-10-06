@@ -7,8 +7,8 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<Attendant>> GetAllAttendantsAsync();
         Task<Attendant> GetAttendantByIdAsync(int id);
-        Task CreateAttendantAsync(Attendant attendant);
-        Task UpdateAttendantAsync(Attendant attendant);
+        Task CreateAttendantAsync(string name, string lastName, string relationship);
+        Task UpdateAttendantAsync(int id, string name, string lastName, string relationship);
         Task SoftDeleteAttendantAsync(int id);
     }
 
@@ -34,17 +34,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a attendant
-        public async Task CreateAttendantAsync(Attendant attendant)
+        public async Task CreateAttendantAsync(string name, string lastName, string relationship)
         {
-            await _attendantRepository.CreateAttendantAsync(attendant);
+            await _attendantRepository.CreateAttendantAsync(name, lastName, relationship);
         }
 
         // Update a attendant
-        public async Task UpdateAttendantAsync(Attendant attendant)
+        public async Task UpdateAttendantAsync(int id, string name, string lastName, string relationship)
         {
             try
             {
-                await _attendantRepository.UpdateAttendantAsync(attendant);
+                await _attendantRepository.UpdateAttendantAsync(id, name, lastName, relationship);
             }
             catch (Exception e)
             {

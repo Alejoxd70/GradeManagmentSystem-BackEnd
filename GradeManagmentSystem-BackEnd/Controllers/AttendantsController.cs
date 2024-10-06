@@ -2,6 +2,7 @@
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 {
@@ -45,12 +46,14 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateAttendant([FromForm] Attendant attendant)
+        public async Task<ActionResult> CreateAttendant(string name, string lastName, string relationship)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _attendantService.CreateAttendantAsync(attendant);
-            return CreatedAtAction(nameof(GetAttendantById), new { id = attendant.Id }, attendant);
+            await _attendantService.CreateAttendantAsync(name, lastName, relationship);
+
+            return StatusCode(StatusCodes.Status201Created, "Attendant created succesfully");
+
         }
 
 
@@ -60,15 +63,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateAttendant(int id, [FromForm] Attendant attendant)
+        public async Task<IActionResult> UpdateAttendant(int id, string name, string lastName, string relationship)
         {
-            if (id != attendant.Id) return BadRequest();
 
             var existingAttendant = await _attendantService.GetAttendantByIdAsync(id);
             if (existingAttendant == null) return NotFound();
 
-            await _attendantService.UpdateAttendantAsync(attendant);
-            return NoContent();
+            try
+            {
+                await _attendantService.UpdateAttendantAsync(id, name, lastName, relationship);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a attendant
@@ -81,8 +90,15 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var attendant = await _attendantService.GetAttendantByIdAsync(id);
             if (attendant == null) return NotFound();
 
-            await _attendantService.SoftDeleteAttendantAsync(id);
-            return NoContent();
+            try
+            {
+                await _attendantService.SoftDeleteAttendantAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using GradeManagmentSystem_BackEnd.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GradeManagmentSystem_BackEnd.Controllers
 {
@@ -45,12 +46,13 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateStudent([FromForm] Student student)
+        public async Task<ActionResult> CreateStudent( string student_code, int userId, int attendantId )
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            await _studentService.CreateStudentAsync(student);
-            return CreatedAtAction(nameof(GetStudentById), new { id = student.Id }, student);
+            await _studentService.CreateStudentAsync(student_code, userId, attendantId );
+
+            return StatusCode(StatusCodes.Status201Created, "Student created successfully.");
         }
 
 
@@ -60,15 +62,21 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
-        public async Task<IActionResult> UpdateStudent(int id, [FromForm] Student student)
+        public async Task<IActionResult> UpdateStudent(int id,  string student_code, int userId, int attendantId )
         {
-            if (id != student.Id) return BadRequest();
 
             var existingStudent = await _studentService.GetStudentByIdAsync(id);
             if (existingStudent == null) return NotFound();
 
-            await _studentService.UpdateStudentAsync(student);
-            return NoContent();
+            try
+            {
+                await _studentService.UpdateStudentAsync(id, student_code, userId, attendantId);
+                return StatusCode(StatusCodes.Status200OK, ("Updated Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         // Delete a student
@@ -81,8 +89,16 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             var student = await _studentService.GetStudentByIdAsync(id);
             if (student == null) return NotFound();
 
-            await _studentService.SoftDeleteStudentAsync(id);
-            return NoContent();
+
+            try
+            {
+                await _studentService.SoftDeleteStudentAsync(id);
+                return StatusCode(StatusCodes.Status200OK, ("Deleted Successfully"));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

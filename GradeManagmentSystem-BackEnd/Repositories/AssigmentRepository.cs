@@ -8,8 +8,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
     {
         Task<IEnumerable<Assigment>> GetAllAssigmentsAsync();
         Task<Assigment> GetAssigmentByIdAsync(int id);
-        Task CreateAssigmentAsync (Assigment assigment);
-        Task UpdateAssigmentAsync(Assigment assigment);
+        Task CreateAssigmentAsync (string name, string description, DateOnly date, int subjectTeacherId);
+        Task UpdateAssigmentAsync(int id, string name, string description, DateOnly date, int subjectTeacherId);
 
         Task SoftDeleteAssigmentAsync (int id);
     }
@@ -24,8 +24,19 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         //Create Assigment 
-        public async Task CreateAssigmentAsync(Assigment assigment)
+        public async Task CreateAssigmentAsync(string name, string description, DateOnly date, int subjectTeacherId)
         {
+            // Fetch foreing keys if exist
+            var subjectTeacher = await _context.SubjectTeachers.FindAsync(subjectTeacherId) ?? throw new Exception("SubjectTeacher not found");
+
+            var assigment = new Assigment
+            {
+                Name = name,
+                Description = description,
+                Date = date,
+                SubjectTeacher = subjectTeacher,
+            };
+
             await _context.Assigments.AddAsync(assigment);
             await _context.SaveChangesAsync();
         }
@@ -35,6 +46,8 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.Assigments
                 .Where(s => !s.IsDeleted) //Excluye eliminados
+                .Include(a => a.SubjectTeacher)
+
                 .ToListAsync();
         }
 
@@ -42,6 +55,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task<Assigment> GetAssigmentByIdAsync(int id)
         {
             return await _context.Assigments.AsNoTracking()
+                .Include(a => a.SubjectTeacher)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 
@@ -57,8 +71,20 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         //Update Assigment
-        public async Task UpdateAssigmentAsync(Assigment assigment)
+        public async Task UpdateAssigmentAsync(int id, string name, string description, DateOnly date, int subjectTeacherId)
         {
+            // Fetch the Assigment
+            var assigment = await _context.Assigments.FindAsync(id) ?? throw new Exception("Assigment not found");
+
+            // Fetch foreing keys if exist
+            var subjectTeacher = await _context.SubjectTeachers.FindAsync(subjectTeacherId) ?? throw new Exception("SubjectTeacher not found");
+
+            //update
+            assigment.Name = name;
+            assigment.Description = description;
+            assigment.Date = date;  
+            assigment.SubjectTeacher = subjectTeacher;
+
             try
             {
                 _context.Assigments.Update(assigment);

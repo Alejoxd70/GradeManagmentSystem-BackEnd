@@ -7,9 +7,11 @@ namespace GradeManagmentSystem_BackEnd.Services
     {
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
-        Task CreateUserAsync(User user);
-        Task UpdateUserAsync(User user);
+        Task CreateUserAsync(string name, string lastName, string email, string password, string identification, int userTypeId);
+        Task UpdateUserAsync(int id, string name, string lastName, string email, string password, string identification , int userTypeId);
         Task SoftDeleteUserAsync(int id);
+        Task<bool> ValidateUserAsync(string email, string password);
+
     }
 
     public class UserService : IUserService
@@ -34,17 +36,17 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Create a user
-        public async Task CreateUserAsync(User user)
+        public async Task CreateUserAsync(string name, string lastName, string email, string password, string identification, int userTypeId)
         {
-            await _userRepository.CreateUserAsync(user);
+            await _userRepository.CreateUserAsync(name, lastName, email, password, identification, userTypeId);
         }
 
         // Update a user
-        public async Task UpdateUserAsync(User user)
+        public async Task UpdateUserAsync(int id, string name, string lastName, string email, string password, string identification, int userTypeId)
         {
             try
             {
-                await _userRepository.UpdateUserAsync(user);
+                await _userRepository.UpdateUserAsync(id, name, lastName, email, password, identification, userTypeId);
             }
             catch (Exception e)
             {
@@ -58,6 +60,12 @@ namespace GradeManagmentSystem_BackEnd.Services
         public async Task SoftDeleteUserAsync(int id)
         {
             await _userRepository.SoftDeleteUserAsync(id);
+        }
+
+        // validate user
+        public async Task<bool> ValidateUserAsync(string email, string password)
+        {
+            return await _userRepository.ValidateUserAsync(email, password);
         }
     }
 }
