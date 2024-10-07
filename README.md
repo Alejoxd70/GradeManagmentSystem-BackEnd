@@ -1,6 +1,12 @@
 # Grades Managment System BackEnd
 Back End created using .Net8, Entity Framework and Swagger
 ## Endpoints
+[GET](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#get-apientidad)</br>
+[POST](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#post-apientidad)</br>
+[PUT](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#put-apientidadid)</br>
+[DELETE](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#delete-apiassignmentsid)</br>
+[LOGIN](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#post-apiuserslogin-login)</br>
+[PERMISOS](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#get-apipermissionusertypesvalidate-permisos)</br>
 
 ### GET /api/[Entidad]
 **Descripción:** Obtiene una lista de todos los registros existentes en la base de datos del sistema. </br>
@@ -31,7 +37,7 @@ Back End created using .Net8, Entity Framework and Swagger
 **Respuesta esperada:** Si las credenciales son correctas, el sitema dejará ingresar el usuraio al sistema.  </br>
 **Código de estado:** 401 Unauthorized: Cuando las credenciales son incorrectas </br>
 
-### GET /api/PermissionUserTypes/validate 
+### GET /api/PermissionUserTypes/validate (PERMISOS)
 **Descripción:** Los permisos en el sistema definen qué acciones puede realizar un usuario en función de su rol o tipo de usuario. En este caso los roles que se usaran son: administrador, profesor y estudiante. Cada uno de estos roles tiene permisos específicos para acceder a ciertos endpoints o realizar acciones particulares (crear, actualizar, eliminar datos, etc.).  </br>
 **Cuerpo de la solicitud:** JSON con el tipo de usuario y permisos relacionados</br>
 **Respuesta esperada:** Permitir al usuario hacer ciertas acciones. </br>
