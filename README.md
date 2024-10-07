@@ -1,12 +1,12 @@
 # Grades Managment System BackEnd
 Back End created using .Net8, Entity Framework and Swagger
 ## Endpoints
-[GET](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#get-apientidad)</br>
-[POST](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#post-apientidad)</br>
-[PUT](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#put-apientidadid)</br>
-[DELETE](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#delete-apiassignmentsid)</br>
-[LOGIN](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#post-apiuserslogin-login)</br>
-[PERMISOS](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd/edit/master/README.md#get-apipermissionusertypesvalidate-permisos)</br>
+>[GET](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd?tab=readme-ov-file#get-apientidad)</br>
+[POST](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd?tab=readme-ov-file#post-apientidad)</br>
+[PUT](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd?tab=readme-ov-file#put-apientidadid)</br>
+[DELETE](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd?tab=readme-ov-file#delete-apiassignmentsid)</br>
+[LOGIN](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd?tab=readme-ov-file#post-apiuserslogin-login)</br>
+[PERMISOS](https://github.com/Alejoxd70/GradeManagmentSystem-BackEnd?tab=readme-ov-file#get-apipermissionusertypesvalidate-permisos)</br>
 
 ### GET /api/[Entidad]
 **Descripción:** Obtiene una lista de todos los registros existentes en la base de datos del sistema. </br>
