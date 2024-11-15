@@ -47,6 +47,10 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             return await _context.Assigments
                 .Where(s => !s.IsDeleted) //Excluye eliminados
                 .Include(a => a.SubjectTeacher)
+                .Include(a => a.SubjectTeacher.Teacher.User)
+                .Include(a => a.SubjectTeacher.Subject)
+                .Include(a => a.SubjectTeacher.GroupYear.Student.User)
+                .Include(a => a.SubjectTeacher.GroupYear.Group)
 
                 .ToListAsync();
         }
@@ -56,6 +60,10 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.Assigments.AsNoTracking()
                 .Include(a => a.SubjectTeacher)
+                .Include(a => a.SubjectTeacher.Teacher.User)
+                .Include(a => a.SubjectTeacher.Subject)
+                .Include(a => a.SubjectTeacher.GroupYear.Student.User)
+                .Include(a => a.SubjectTeacher.GroupYear.Group)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 

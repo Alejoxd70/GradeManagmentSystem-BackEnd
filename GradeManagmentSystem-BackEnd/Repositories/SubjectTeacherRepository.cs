@@ -45,9 +45,10 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.SubjectTeachers
                 .Where(s => !s.IsDeleted)
-                .Include(s => s.Teacher)
+                .Include(s => s.Teacher.User)
                 .Include(s => s.Subject)
-                .Include(s => s.GroupYear)
+                .Include(s => s.GroupYear.Student.User)
+                .Include(s => s.GroupYear.Group)
                 .ToListAsync();
         }
 
@@ -55,9 +56,10 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task<SubjectTeacher> GetSubjectTeacherByIdAsync(int id)
         {
             return await _context.SubjectTeachers.AsNoTracking()
-                .Include(s => s.Teacher)
+                .Include(s => s.Teacher.User)
                 .Include(s => s.Subject)
-                .Include(s => s.GroupYear)
+                .Include(s => s.GroupYear.Student.User)
+                .Include(s => s.GroupYear.Group)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 

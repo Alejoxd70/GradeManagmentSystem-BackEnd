@@ -10,7 +10,7 @@ namespace GradeManagmentSystem_BackEnd.Model
         public required string Name { get; set; }
         public required string LastName { get; set; }
         public required string Email { get; set; }
-        public required string Password { get; set; }
+        public required string? Password { get; set; }
         public required string Identification { get; set; }
 
         public virtual required UserType UserType { get; set; }

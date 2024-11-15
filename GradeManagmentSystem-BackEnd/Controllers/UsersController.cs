@@ -81,11 +81,24 @@ namespace GradeManagmentSystem_BackEnd.Controllers
             // Validate the user
             try
             {
-                var isValid = await _userService.ValidateUserAsync(email, password);
-                if (isValid)
+                var user = await _userService.ValidateUserAsync(email, password);
+                if (user != null)
                 {
-                    // Handle successful login  
-                    return Ok(new { Message = "Login successful" });
+
+                    // Return the token and some minimal user info
+                    return Ok(new
+                    {
+                        Message = "Login successful",
+                        User = new
+                        {
+                            user.Id,
+                            user.Name,
+                            user.LastName,
+                            user.Identification,
+                            user.Email,
+                            user.UserType // Add only necessary fields
+                        }
+                    });
                 }
             }
             catch (Exception ex)
@@ -106,7 +119,7 @@ namespace GradeManagmentSystem_BackEnd.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
 
 
-        public async Task<IActionResult> UpdateUser(int id, string name, string lastName, string email, string password, string identification, int userTypeId)
+        public async Task<IActionResult> UpdateUser(int id, string name, string lastName, string email, string? password, string identification, int userTypeId)
         {
 
             var existingUser = await _userService.GetUserByIdAsync(id);
