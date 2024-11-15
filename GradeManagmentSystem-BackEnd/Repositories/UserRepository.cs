@@ -12,7 +12,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         Task CreateUserAsync (string name, string lastName, string email, string password, string identification, int userTypeId);
         Task UpdateUserAsync (int id, string name, string lastName, string email, string password, string identification, int userTypeId);
         Task SoftDeleteUserAsync (int id);
-        Task<bool> ValidateUserAsync(string email, string password);
+        Task<User> ValidateUserAsync(string email, string password);
     }
 
     public class UserRepository : IUserRepository
@@ -84,15 +84,19 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             // Fetch the User object based on userId and attendantId
             var userType = await _context.UserTypes.FindAsync(userTypeId) ?? throw new Exception("UserType not found");
 
-            // Hash the password
-            var passwordHasher = new PasswordHasher<User>();
-            var hashedPassword = passwordHasher.HashPassword(user, password);
+            // Update password if not null
+            if (!string.IsNullOrEmpty(password))
+            {
+                var passwordHasher = new PasswordHasher<User>();
+                var hashedPassword = passwordHasher.HashPassword(user, password);
+                user.Password = hashedPassword;
+            }
+
 
             // Update
             user.Name = name;
             user.LastName = lastName;
             user.Email = email;
-            user.Password = hashedPassword;
             user.Identification = identification;
             user.UserType = userType;
 
@@ -123,13 +127,13 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         }
 
         // Check user password and email
-        public async Task<bool> ValidateUserAsync(string email, string password)
+        public async Task<User> ValidateUserAsync(string email, string password)
         {
             // Fetch the user by email
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email) ?? throw new Exception("User not found");
 
             // User does not exist
-            if (user == null) return false;
+            if (user == null) return null;
      
             // Initialize PasswordHasher
             var passwordHasher = new PasswordHasher<User>();
@@ -138,10 +142,15 @@ namespace GradeManagmentSystem_BackEnd.Repositories
             var userVerification = passwordHasher.VerifyHashedPassword(user, user.Password, password);
 
             // Check if password is correct
-            if (userVerification  == PasswordVerificationResult.Success) return true;
+            if (userVerification  == PasswordVerificationResult.Success)
+            {
+                return await _context.Users.AsNoTracking()
+                .Include(u => u.UserType)
+                .FirstOrDefaultAsync(s => s.Email == email && !s.IsDeleted);
+            }
 
             // Password is invalid
-            return false;
+            return null;
         }
     }
 }

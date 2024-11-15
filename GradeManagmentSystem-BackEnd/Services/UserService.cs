@@ -8,9 +8,9 @@ namespace GradeManagmentSystem_BackEnd.Services
         Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetUserByIdAsync(int id);
         Task CreateUserAsync(string name, string lastName, string email, string password, string identification, int userTypeId);
-        Task UpdateUserAsync(int id, string name, string lastName, string email, string password, string identification , int userTypeId);
+        Task UpdateUserAsync(int id, string name, string lastName, string email, string? password, string identification , int userTypeId);
         Task SoftDeleteUserAsync(int id);
-        Task<bool> ValidateUserAsync(string email, string password);
+        Task<User> ValidateUserAsync(string email, string password);
 
     }
 
@@ -42,7 +42,7 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // Update a user
-        public async Task UpdateUserAsync(int id, string name, string lastName, string email, string password, string identification, int userTypeId)
+        public async Task UpdateUserAsync(int id, string name, string lastName, string email, string? password, string identification, int userTypeId)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace GradeManagmentSystem_BackEnd.Services
         }
 
         // validate user
-        public async Task<bool> ValidateUserAsync(string email, string password)
+        public async Task<User> ValidateUserAsync(string email, string password)
         {
             try
             {

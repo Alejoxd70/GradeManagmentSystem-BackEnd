@@ -27,8 +27,10 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.Grades
                 .Where(s => !s.IsDeleted) // Avoid deleted items
-                .Include(g => g.Student)
-                .Include(g => g.Assigment)
+                .Include(g => g.Student.User)
+                .Include(g => g.Assigment.SubjectTeacher.Teacher)
+                .Include(g => g.Assigment.SubjectTeacher.GroupYear)
+                .Include(g => g.Assigment.SubjectTeacher.Subject)
                 .ToListAsync();
         }
 
@@ -37,7 +39,9 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.Grades.AsNoTracking()
                 .Include(g => g.Student)
-                .Include(g => g.Assigment)
+                .Include(g => g.Assigment.SubjectTeacher.Teacher)
+                .Include(g => g.Assigment.SubjectTeacher.GroupYear)
+                .Include(g => g.Assigment.SubjectTeacher.Subject)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
 

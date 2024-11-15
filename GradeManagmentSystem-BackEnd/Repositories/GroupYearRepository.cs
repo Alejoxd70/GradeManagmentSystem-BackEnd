@@ -47,7 +47,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         {
             return await _context.GroupYears
                .Where(s => !s.IsDeleted) // Excluye eliminados Avoid deleted items
-               .Include(g => g.Student)
+               .Include(g => g.Student.User)
                .Include(g => g.Group)
                .ToListAsync();
         }
@@ -56,7 +56,7 @@ namespace GradeManagmentSystem_BackEnd.Repositories
         public async Task<GroupYear> GetGroupYearByIdAsync(int id)
         {
             return await _context.GroupYears.AsNoTracking()
-                .Include(g => g.Student)
+                .Include(g => g.Student.User)
                 .Include(g => g.Group)
                 .FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
         }
